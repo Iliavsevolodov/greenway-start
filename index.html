@@ -97,17 +97,59 @@
 
         <div class="ready-box">
           <b>Готов? Поехали! 🚀</b>
-          <p>После вступления в чат можно двигаться дальше к следующему этапу запуска.</p>
+          <p>После вступления в чат отметь действие ниже. Появится конфетти и откроется следующий шаг.</p>
+        </div>
+
+        <button class="completion-check" type="button" id="chatJoinedBtn" aria-label="Я вступил или вступила в чат">
+          <span class="check-box"><i>✓</i></span>
+          <b>Вступил(-а) в чат</b>
+        </button>
+
+        <div class="nav-row one-col">
+          <button class="secondary-btn" type="button" data-go="welcome">← Назад</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="step-card flow-screen" data-screen="step2">
+      <div class="shine"></div>
+      <div class="watermark">HELLO</div>
+
+      <div class="step-content">
+        <div class="step-label">👋 шаг 2 - знакомство</div>
+
+        <h2 class="step-title">Напиши пару слов о себе</h2>
+
+        <p class="step-text">
+          Теперь можно написать в командном чате короткое сообщение о себе, чтобы познакомиться. Команда тебя поприветствует, а наставникам будет проще понять, как тебя поддержать.
+        </p>
+
+        <div class="intro-template">
+          <b>Можно написать так:</b>
+          <p>Привет! Меня зовут ... Я из ... Сейчас занимаюсь ... Мне интересен сетевой бизнес и Greenway, потому что ... Хочу разобраться, как здесь всё устроено, и начать двигаться по шагам.</p>
+        </div>
+
+        <div class="benefit-grid">
+          <div class="benefit-item"><em>🙋‍♂️</em><span>Расскажи, как тебя зовут и из какого ты города</span></div>
+          <div class="benefit-item"><em>💼</em><span>Напиши, чем ты сейчас занимаешься</span></div>
+          <div class="benefit-item"><em>🌱</em><span>Поделись, почему тебе интересен сетевой бизнес и Greenway</span></div>
+          <div class="benefit-item"><em>🎯</em><span>Можно добавить, какой результат тебе хочется получить</span></div>
+        </div>
+
+        <div class="ready-box">
+          <b>Не бойся писать 🚀</b>
+          <p>В чате нормальная живая атмосфера. Здесь все когда-то тоже делали первый шаг.</p>
         </div>
 
         <div class="nav-row">
-          <button class="secondary-btn" type="button" data-go="welcome">← Назад</button>
+          <button class="secondary-btn" type="button" data-go="step1">← Назад</button>
           <button class="next-step-btn" type="button">Следующий шаг скоро</button>
         </div>
       </div>
     </section>
   </main>
 
+  <div class="confetti-layer" id="confettiLayer"></div>
   <div class="toast" id="toast">Готово</div>
   <script src="assets/js/app.js"></script>
 </body>
