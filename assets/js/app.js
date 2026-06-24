@@ -4,10 +4,12 @@ const loader = document.getElementById('loader');
 const loaderPercent = document.getElementById('loaderPercent');
 const confettiLayer = document.getElementById('confettiLayer');
 const chatJoinedBtn = document.getElementById('chatJoinedBtn');
+const progressBar = document.getElementById('progressBar');
 const screens = Array.from(document.querySelectorAll('.flow-screen'));
 const goButtons = Array.from(document.querySelectorAll('[data-go]'));
 const copyButtons = Array.from(document.querySelectorAll('[data-copy-target]'));
 
+const order = ['welcome', 'step1', 'step2'];
 const STORAGE_SCREEN_KEY = 'greenwayStartCurrentScreen';
 const STORAGE_CHAT_KEY = 'greenwayStartChatJoined';
 
@@ -39,6 +41,13 @@ function getSavedChatJoined() {
   }
 }
 
+function updateProgress(name) {
+  if (!progressBar) return;
+  const idx = order.indexOf(name);
+  const percent = idx < 0 ? 0 : (idx / (order.length - 1)) * 100;
+  progressBar.style.width = percent + '%';
+}
+
 function showToast(text) {
   if (!toast) return;
   toast.textContent = text;
@@ -55,6 +64,8 @@ function applyScreen(name, shouldSave = true) {
   screens.forEach(screen => screen.classList.remove('active'));
   if (safeNext) safeNext.classList.add('active');
   if (shouldSave) saveScreen(safeName);
+
+  updateProgress(safeName);
 }
 
 function showScreen(name) {
