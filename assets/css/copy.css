@@ -1,0 +1,62 @@
+.copy-card {
+  display: grid;
+  gap: 12px;
+}
+
+.copy-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.copy-head b {
+  margin: 0 !important;
+}
+
+.copy-btn {
+  border: 1px solid rgba(23, 19, 12, .14);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--ink);
+  min-height: 42px;
+  padding: 0 14px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 4px 5px 0 rgba(246, 196, 0, .75);
+  transition: .2s ease;
+  white-space: nowrap;
+}
+
+.copy-btn:active {
+  transform: translateY(2px);
+  box-shadow: 2px 3px 0 rgba(246, 196, 0, .75);
+}
+
+.copy-text {
+  position: relative;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.62);
+  border: 1px dashed rgba(23, 19, 12, .22);
+  user-select: text;
+}
+
+.copy-card.copied .copy-text {
+  border-color: rgba(47, 125, 74, .55);
+  background: rgba(47, 125, 74, .08);
+}
+
+@media (max-width: 640px) {
+  .copy-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .copy-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
