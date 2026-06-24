@@ -1,0 +1,122 @@
+/* Верхняя панель шагов */
+.steps-panel {
+  position: sticky;
+  top: 8px;
+  z-index: 30;
+  margin: 0 0 14px;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  border: 1px solid rgba(23, 19, 12, .10);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .62);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 14px 34px rgba(36, 29, 14, .10);
+}
+
+.step-pill {
+  min-width: 0;
+  min-height: 48px;
+  border: 1px solid rgba(23, 19, 12, .10);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .55);
+  color: rgba(23, 19, 12, .55);
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  transition: .22s ease;
+  text-align: left;
+}
+
+.step-pill:hover {
+  background: rgba(255, 255, 255, .86);
+}
+
+.step-pill[disabled] {
+  cursor: default;
+  opacity: .55;
+}
+
+.step-num {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: rgba(23, 19, 12, .08);
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1;
+}
+
+.step-name {
+  min-width: 0;
+  font-size: 12px;
+  line-height: 1.05;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.step-pill.active {
+  background: var(--yellow);
+  color: var(--ink);
+  border-color: rgba(23, 19, 12, .18);
+  box-shadow: 3px 4px 0 rgba(23, 19, 12, .88);
+}
+
+.step-pill.active .step-num {
+  background: var(--ink);
+  color: #fff;
+}
+
+.step-pill.done {
+  color: var(--ink);
+}
+
+.step-pill.done .step-num {
+  background: var(--green);
+  color: #fff;
+}
+
+.step-pill.done .step-num::before {
+  content: "✓";
+}
+
+.step-pill.done .step-num {
+  font-size: 0;
+}
+
+@media (max-width: 640px) {
+  .steps-panel {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    top: 6px;
+    border-radius: 16px;
+  }
+
+  .steps-panel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .step-pill {
+    min-width: 116px;
+    min-height: 44px;
+    border-radius: 12px;
+  }
+
+  .step-name {
+    font-size: 11px;
+  }
+}
