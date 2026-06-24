@@ -1,0 +1,20 @@
+/* Progress bar (app-like onboarding) */
+.progress {
+  position: sticky;
+  top: 64px;
+  z-index: 25;
+  height: 3px;
+  margin: 0 14px 10px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+.progress__bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #f6c400, #ffdf5a);
+  border-radius: 999px;
+  transition: width 0.45s cubic-bezier(.2,.8,.2,1);
+  box-shadow: 0 2px 10px rgba(246,196,0,0.35);
+}
