@@ -4,132 +4,63 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#F6C400" />
-  <title>GREENWAY START | Пошаговый запуск</title>
+  <title>GREENWAY START</title>
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
   <div class="grain"></div>
-  <main class="app">
+  <div class="orb orb-one"></div>
+  <div class="orb orb-two"></div>
+  <div class="orb orb-three"></div>
 
+  <main class="app">
     <header class="topbar">
-      <div class="brand">
-        <img src="assets/images/22730316-1FBE-42F0-811C-210DE83562D7.png" alt="Greenway Global">
-        <div class="brand-copy">
-          <strong>GREENWAY START</strong>
-          <span>пошаговый запуск</span>
-        </div>
+      <div class="brand-text" aria-label="Greenway старт">
+        <strong>GREENWAY</strong>
+        <span>СТАРТ</span>
       </div>
-      <button class="reset" id="resetBtn" type="button">↺ <span>сбросить</span></button>
+
+      <button class="restart" id="resetBtn" type="button" aria-label="Начать заново">
+        <span class="restart-icon">↺</span>
+        <small>начать заново</small>
+      </button>
     </header>
 
-    <!-- WELCOME HERO -->
-    <section class="hero">
-      <div class="card">
-        <div class="watermark">WELCOME</div>
-        <div class="chip">🎉 Добро пожаловать</div>
+    <section class="welcome-card">
+      <div class="shine"></div>
+      <div class="floating-label">START</div>
+      <div class="watermark">GREENWAY</div>
+
+      <div class="hero-content">
+        <div class="mini-chip">🎉 старт новичка</div>
 
         <h1>Добро пожаловать в Greenway!</h1>
 
         <p class="lead">
-          🎉 Поздравляю с регистрацией! Добро пожаловать в команду! <br><br>
-          И впереди тебя ждёт путь: от первых шагов до стабильного дохода,
+          Поздравляю с регистрацией! Добро пожаловать в команду.
+          Впереди тебя ждёт путь от первых шагов до стабильного дохода,
           сильного окружения и настоящей свободы.
         </p>
 
-        <img src="assets/images/0CCA83FC-F1D3-4160-9F02-0BC0A81E301E.png"
-             style="width:100%;border-radius:24px;margin-top:18px;box-shadow:0 20px 50px rgba(0,0,0,.15)" />
+        <figure class="hero-image-wrap">
+          <img class="hero-image" src="assets/images/0CCA83FC-F1D3-4160-9F02-0BC0A81E301E.png" alt="Команда Greenway">
+        </figure>
 
-        <a class="main" href="#step1">
-          <span>🚀</span><b>Начать обучение</b><span>→</span>
-        </a>
-      </div>
-    </section>
-
-    <!-- STEPS -->
-    <section class="steps">
-      <div class="steps-info">
-        <span id="stepLabel">Шаг 1 из 3</span>
-        <strong id="stepTitle">Командный чат</strong>
-      </div>
-      <div class="dots" id="dots"></div>
-    </section>
-
-    <!-- STEP 1 -->
-    <section class="screen active" data-step="0">
-      <div class="card">
-        <div class="watermark">START</div>
-        <div class="chip">🎉 <span>Шаг 1</span></div>
-        <h1>Присоединение к команде</h1>
-        <p class="lead">Первый шаг — подключиться к командному чату. Здесь твоя поддержка и движение.</p>
-
-        <a class="main" href="https://vk.me/join/AZQ1d8WPkSFkQIKNsv9waSB2">
-          <span>💬</span><b>Перейти в командный чат</b><span>→</span>
-        </a>
-
-        <div class="check">
-          <h2>Выполни перед переходом</h2>
-          <label class="task"><input type="checkbox" data-task="0-0"><span class="mark"></span><p>Я вступил в командный чат</p></label>
-          <label class="task"><input type="checkbox" data-task="0-1"><span class="mark"></span><p>Я написал наставнику</p></label>
+        <div class="intro-note">
+          <span>01</span>
+          <p>Переходи к шагу номер 1, и начнём постепенно погружаться.</p>
         </div>
 
-        <button class="next" data-next="1" type="button" disabled>Далее →</button>
+        <button class="primary-btn" type="button" id="startBtn">
+          <span>🚀</span>
+          <b>Перейти к шагу 1</b>
+          <i>→</i>
+        </button>
       </div>
     </section>
-
-    <!-- STEP 2 -->
-    <section class="screen" data-step="1">
-      <div class="card">
-        <div class="watermark">GLOBAL</div>
-        <div class="chip">🌿 <span>Шаг 2</span></div>
-
-        <h1>Компания Greenway</h1>
-        <p class="lead">Greenway Global — международная компания в более чем 60 странах.</p>
-
-        <div class="video">
-          <iframe src="https://vk.ru/video_ext.php?oid=231428631&id=456245298" frameborder="0" allowfullscreen></iframe>
-        </div>
-
-        <div class="check">
-          <h2>Выполни перед переходом</h2>
-          <label class="task"><input type="checkbox" data-task="1-0"><span class="mark"></span><p>Я посмотрел видео</p></label>
-          <label class="task"><input type="checkbox" data-task="1-1"><span class="mark"></span><p>Я понял основы компании</p></label>
-        </div>
-
-        <button class="next" data-next="2" type="button" disabled>Далее →</button>
-        <button class="back" data-back="0" type="button">Назад</button>
-      </div>
-    </section>
-
-    <!-- STEP 3 -->
-    <section class="screen" data-step="2">
-      <div class="card">
-        <div class="watermark">APP</div>
-        <div class="chip">📱 <span>Шаг 3</span></div>
-
-        <h1>Приложение и старт</h1>
-        <p class="lead">Скачай приложение и зайди в личный кабинет.</p>
-
-        <img src="assets/images/IMG_0752.png" style="width:100%;border-radius:20px;margin-top:14px" />
-
-        <div class="apps">
-          <a href="https://play.google.com/store/apps/details?id=com.greenwayglobal">🤖 Android</a>
-          <a href="https://apps.apple.com/us/app/greenway-global/id1606315640">🍏 iOS</a>
-        </div>
-
-        <div class="check">
-          <h2>Завершение</h2>
-          <label class="task"><input type="checkbox" data-task="2-0"><span class="mark"></span><p>Я установил приложение</p></label>
-        </div>
-
-        <button class="finish" id="finishBtn" type="button" disabled>Завершить ✨</button>
-      </div>
-    </section>
-
   </main>
 
   <div class="toast" id="toast">Готово</div>
-  <div class="confetti" id="confetti"></div>
-
   <script src="assets/js/app.js"></script>
 </body>
 </html>
