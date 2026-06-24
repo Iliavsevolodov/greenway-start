@@ -1,0 +1,183 @@
+/* Clean app-like wow effects: glow, glare, depth */
+
+body {
+  background:
+    radial-gradient(circle at 8% 8%, rgba(255, 255, 255, 0.95), transparent 24%),
+    radial-gradient(circle at 92% 10%, rgba(66, 184, 131, 0.12), transparent 22%),
+    radial-gradient(circle at 80% 88%, rgba(63, 81, 181, 0.08), transparent 24%),
+    radial-gradient(circle at 20% 92%, rgba(106, 196, 120, 0.10), transparent 20%),
+    linear-gradient(180deg, #f9fbfa 0%, #f3f7f5 52%, #eef4f0 100%) !important;
+}
+
+.orb {
+  filter: blur(38px) !important;
+  opacity: 0.68 !important;
+}
+
+.orb-one {
+  background: rgba(82, 202, 139, 0.18) !important;
+}
+
+.orb-two {
+  background: rgba(145, 220, 173, 0.16) !important;
+}
+
+.orb-three {
+  background: rgba(79, 104, 201, 0.10) !important;
+}
+
+.welcome-card,
+.step-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.56)) !important;
+  border-color: rgba(255, 255, 255, 0.72) !important;
+  box-shadow:
+    0 28px 80px rgba(21, 31, 24, 0.10),
+    0 10px 28px rgba(59, 87, 68, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88) !important;
+}
+
+.welcome-card::before,
+.step-card::before {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.78), transparent 32%),
+    radial-gradient(circle at 100% 0%, rgba(109, 226, 168, 0.14), transparent 26%),
+    radial-gradient(circle at 0% 100%, rgba(85, 129, 255, 0.08), transparent 28%) !important;
+}
+
+.welcome-card::after,
+.step-card::after {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78);
+}
+
+.topbar {
+  padding: 2px 2px 0;
+}
+
+.brand-text strong {
+  text-shadow: 0 4px 18px rgba(23, 19, 12, 0.08);
+}
+
+.brand-text span {
+  text-shadow: 0 0 18px rgba(47, 125, 74, 0.14);
+}
+
+.restart,
+.step-label,
+.intro-note,
+.benefit-item,
+.advice-box,
+.ready-box,
+.intro-template,
+.copy-text,
+.secondary-btn,
+.completion-check {
+  background: rgba(255, 255, 255, 0.62) !important;
+  border-color: rgba(255, 255, 255, 0.74) !important;
+  box-shadow:
+    0 12px 28px rgba(28, 38, 32, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92) !important;
+}
+
+.hero-image-wrap {
+  background: rgba(255, 255, 255, 0.42) !important;
+  border-color: rgba(255, 255, 255, 0.72) !important;
+  box-shadow:
+    0 30px 72px rgba(32, 48, 37, 0.14),
+    0 12px 30px rgba(86, 148, 111, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+}
+
+.hero-image-wrap::before {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.44), transparent 42%) !important;
+}
+
+.hero-image-wrap::after {
+  background:
+    radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.46), transparent 24%),
+    linear-gradient(115deg, transparent 25%, rgba(255, 255, 255, 0.12) 35%, transparent 46%) !important;
+  opacity: 0.92 !important;
+}
+
+.primary-btn,
+.chat-link {
+  background: linear-gradient(135deg, #17130c, #263228 58%, #1f4b35 100%) !important;
+  box-shadow:
+    0 18px 42px rgba(25, 39, 31, 0.24),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+    5px 6px 0 rgba(246, 196, 0, 0.82) !important;
+}
+
+.primary-btn::after,
+.chat-link::after,
+.next-step-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.16), transparent 34%);
+  pointer-events: none;
+}
+
+.primary-btn span,
+.chat-link .chat-icon {
+  background: rgba(255, 255, 255, 0.14) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.next-step-btn {
+  position: relative;
+  background: linear-gradient(135deg, #f7d54f, #f6c400) !important;
+  box-shadow:
+    0 16px 34px rgba(246, 196, 0, 0.22),
+    4px 5px 0 rgba(23, 19, 12, 0.88) !important;
+}
+
+.copy-btn {
+  background: rgba(255, 255, 255, 0.92) !important;
+  box-shadow:
+    0 10px 22px rgba(52, 65, 56, 0.08),
+    3px 4px 0 rgba(246, 196, 0, 0.56) !important;
+}
+
+.check-box {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+.completion-check.checked {
+  box-shadow:
+    0 14px 30px rgba(91, 169, 115, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.78) !important;
+}
+
+.progress {
+  background: rgba(255, 255, 255, 0.52) !important;
+  box-shadow:
+    0 8px 22px rgba(35, 48, 40, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82) !important;
+}
+
+.progress__bar {
+  position: relative;
+  background: linear-gradient(90deg, #2f7d4a, #57b970) !important;
+  box-shadow:
+    0 0 18px rgba(87, 185, 112, 0.35),
+    0 0 32px rgba(87, 185, 112, 0.18) !important;
+  overflow: hidden;
+}
+
+.progress__bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.34), transparent);
+  animation: progressSweep 2.6s linear infinite;
+}
+
+.toast {
+  background: rgba(23, 19, 12, 0.94) !important;
+  box-shadow: 0 18px 40px rgba(18, 22, 20, 0.25), 0 0 20px rgba(87, 185, 112, 0.12) !important;
+}
+
+@keyframes progressSweep {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
+}
