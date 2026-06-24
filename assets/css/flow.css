@@ -6,7 +6,7 @@
   display: grid;
   place-items: center;
   background: #ffffff;
-  transition: opacity .45s ease, visibility .45s ease;
+  transition: opacity .35s ease, visibility .35s ease;
 }
 
 .loader.hide {
@@ -54,7 +54,7 @@
 .app {
   opacity: 0;
   transform: translateY(12px);
-  transition: opacity .55s ease, transform .55s ease;
+  transition: opacity .45s ease, transform .45s ease;
 }
 
 body.loaded .app {
@@ -208,7 +208,8 @@ body.screen-leave .flow-screen.active {
 
 .benefit-item,
 .advice-box,
-.ready-box {
+.ready-box,
+.intro-template {
   border: 1px solid var(--line);
   border-radius: 24px;
   background: rgba(255,255,255,.55);
@@ -234,7 +235,8 @@ body.screen-leave .flow-screen.active {
 }
 
 .advice-box b,
-.ready-box b {
+.ready-box b,
+.intro-template b {
   display: block;
   color: var(--ink);
   font-size: 18px;
@@ -242,17 +244,81 @@ body.screen-leave .flow-screen.active {
 }
 
 .advice-box p,
-.ready-box p {
+.ready-box p,
+.intro-template p {
   margin: 0;
   color: #625949;
   line-height: 1.5;
   font-weight: 650;
 }
 
+.completion-check {
+  width: 100%;
+  min-height: 72px;
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  background: rgba(255, 255, 255, .66);
+  box-shadow: var(--soft);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  cursor: pointer;
+  text-align: left;
+  transition: .22s ease;
+}
+
+.completion-check:hover {
+  background: rgba(255,255,255,.82);
+}
+
+.completion-check.checked {
+  background: rgba(246, 196, 0, .22);
+  border-color: rgba(23, 19, 12, .22);
+}
+
+.check-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  border: 2px solid rgba(23, 19, 12, .25);
+  background: #fff;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  transition: .22s ease;
+}
+
+.check-box i {
+  font-style: normal;
+  color: transparent;
+  font-size: 24px;
+  transform: scale(.5);
+  transition: .22s ease;
+}
+
+.completion-check.checked .check-box {
+  background: var(--yellow);
+  border-color: var(--ink);
+  box-shadow: 5px 6px 0 var(--ink);
+}
+
+.completion-check.checked .check-box i {
+  color: var(--ink);
+  transform: scale(1);
+}
+
 .nav-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
+}
+
+.nav-row.one-col {
+  grid-template-columns: 1fr;
 }
 
 .secondary-btn,
@@ -278,6 +344,28 @@ body.screen-leave .flow-screen.active {
   box-shadow: 6px 7px 0 var(--ink);
 }
 
+.confetti-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -18px;
+  width: 10px;
+  height: 16px;
+  border-radius: 3px;
+  animation: confettiFall 1.15s ease-out forwards;
+}
+
+@keyframes confettiFall {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 1; }
+  100% { transform: translate3d(var(--x), 110vh, 0) rotate(720deg); opacity: 0; }
+}
+
 @media (max-width: 640px) {
   .loader-ring { width: 56px; height: 56px; }
   .loader-percent { font-size: 30px; }
@@ -285,4 +373,5 @@ body.screen-leave .flow-screen.active {
   .step-title { font-size: clamp(42px, 13vw, 68px); }
   .step-text { font-size: 16px; }
   .nav-row { grid-template-columns: 1fr; }
+  .completion-check { min-height: 66px; }
 }
