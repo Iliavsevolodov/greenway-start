@@ -112,28 +112,63 @@ function fireConfetti() {
   }
 }
 
+function legacyCopy(text) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'fixed';
+  textarea.style.top = '0';
+  textarea.style.left = '0';
+  textarea.style.width = '1px';
+  textarea.style.height = '1px';
+  textarea.style.opacity = '0';
+  textarea.style.pointerEvents = 'none';
+  textarea.style.fontSize = '16px';
+  document.body.appendChild(textarea);
+
+  textarea.focus();
+  textarea.select();
+  textarea.setSelectionRange(0, textarea.value.length);
+
+  let copied = false;
+  try {
+    copied = document.execCommand('copy');
+  } finally {
+    textarea.remove();
+  }
+
+  if (!copied) {
+    throw new Error('copy_failed');
+  }
+}
+
 async function copyTextFromElement(targetId, button) {
   const target = document.getElementById(targetId);
   if (!target) return;
 
   const text = target.textContent.trim();
   const originalText = button.textContent;
+  let copied = false;
 
   try {
     if (navigator.clipboard && window.isSecureContext) {
       await navigator.clipboard.writeText(text);
-    } else {
-      const textarea = document.createElement('textarea');
-      textarea.value = text;
-      textarea.setAttribute('readonly', '');
-      textarea.style.position = 'fixed';
-      textarea.style.left = '-9999px';
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand('copy');
-      textarea.remove();
+      copied = true;
     }
+  } catch (error) {
+    copied = false;
+  }
 
+  if (!copied) {
+    try {
+      legacyCopy(text);
+      copied = true;
+    } catch (error) {
+      copied = false;
+    }
+  }
+
+  if (copied) {
     const card = button.closest('.copy-card');
     if (card) card.classList.add('copied');
     button.textContent = '✅ Скопировано';
@@ -143,8 +178,16 @@ async function copyTextFromElement(targetId, button) {
       button.textContent = originalText;
       if (card) card.classList.remove('copied');
     }, 1800);
-  } catch (error) {
-    showToast('Не получилось скопировать');
+  } else {
+    showToast('Зажми текст и скопируй вручную');
+    target.setAttribute('tabindex', '-1');
+    target.focus({ preventScroll: true });
+
+    const range = document.createRange();
+    range.selectNodeContents(target);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
   }
 }
 
