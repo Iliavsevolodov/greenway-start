@@ -6,6 +6,36 @@ const confettiLayer = document.getElementById('confettiLayer');
 const chatJoinedBtn = document.getElementById('chatJoinedBtn');
 const screens = Array.from(document.querySelectorAll('.flow-screen'));
 const goButtons = Array.from(document.querySelectorAll('[data-go]'));
+const STORAGE_SCREEN_KEY = 'greenwayStartCurrentScreen';
+const STORAGE_CHAT_KEY = 'greenwayStartChatJoined';
+
+function saveScreen(name) {
+  try {
+    localStorage.setItem(STORAGE_SCREEN_KEY, name);
+  } catch (error) {}
+}
+
+function saveChatJoined(value) {
+  try {
+    localStorage.setItem(STORAGE_CHAT_KEY, value ? '1' : '0');
+  } catch (error) {}
+}
+
+function getSavedScreen() {
+  try {
+    return localStorage.getItem(STORAGE_SCREEN_KEY) || 'welcome';
+  } catch (error) {
+    return 'welcome';
+  }
+}
+
+function getSavedChatJoined() {
+  try {
+    return localStorage.getItem(STORAGE_CHAT_KEY) === '1';
+  } catch (error) {
+    return false;
+  }
+}
 
 function showToast(text) {
   if (!toast) return;
@@ -13,6 +43,16 @@ function showToast(text) {
   toast.classList.add('show');
   clearTimeout(showToast.timer);
   showToast.timer = setTimeout(() => toast.classList.remove('show'), 1600);
+}
+
+function applyScreen(name, shouldSave = true) {
+  const next = document.querySelector(`[data-screen="${name}"]`);
+  const safeName = next ? name : 'welcome';
+  const safeNext = document.querySelector(`[data-screen="${safeName}"]`);
+
+  screens.forEach(screen => screen.classList.remove('active'));
+  if (safeNext) safeNext.classList.add('active');
+  if (shouldSave) saveScreen(safeName);
 }
 
 function showScreen(name) {
@@ -23,11 +63,21 @@ function showScreen(name) {
   document.body.classList.add('screen-leave');
 
   setTimeout(() => {
-    screens.forEach(screen => screen.classList.remove('active'));
+    applyScreen(name, true);
     document.body.classList.remove('screen-leave');
-    next.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, 260);
+}
+
+function restoreProgress() {
+  const savedScreen = getSavedScreen();
+  const chatJoined = getSavedChatJoined();
+
+  applyScreen(savedScreen, false);
+
+  if (chatJoined && chatJoinedBtn) {
+    chatJoinedBtn.classList.add('checked');
+  }
 }
 
 function runLoader() {
@@ -61,9 +111,12 @@ function fireConfetti() {
   }
 }
 
+restoreProgress();
+
 if (resetBtn) {
   resetBtn.addEventListener('click', () => {
     if (chatJoinedBtn) chatJoinedBtn.classList.remove('checked');
+    saveChatJoined(false);
     showScreen('welcome');
     showToast('Начинаем заново');
   });
@@ -78,9 +131,13 @@ goButtons.forEach(button => {
 
 if (chatJoinedBtn) {
   chatJoinedBtn.addEventListener('click', () => {
-    if (chatJoinedBtn.classList.contains('checked')) return;
+    if (chatJoinedBtn.classList.contains('checked')) {
+      showScreen('step2');
+      return;
+    }
 
     chatJoinedBtn.classList.add('checked');
+    saveChatJoined(true);
     fireConfetti();
     showToast('Отлично! Шаг выполнен');
 
