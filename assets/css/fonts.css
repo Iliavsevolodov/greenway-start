@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+body {
+  font-family: 'Inter', 'Manrope', Arial, sans-serif !important;
+}
+
+p, .lead, .step-text, .intro-note p {
+  font-weight: 400 !important;
+  letter-spacing: -0.01em;
+}
+
+.step-title, h1, h2 {
+  font-weight: 600 !important;
+}
+
+.copy-text {
+  font-weight: 400 !important;
+}
