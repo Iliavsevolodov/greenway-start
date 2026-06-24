@@ -7,7 +7,7 @@ const chatJoinedBtn = document.getElementById('chatJoinedBtn');
 const screens = Array.from(document.querySelectorAll('.flow-screen'));
 const goButtons = Array.from(document.querySelectorAll('[data-go]'));
 const copyButtons = Array.from(document.querySelectorAll('[data-copy-target]'));
-const stepNavItems = Array.from(document.querySelectorAll('[data-step-nav]'));
+
 const STORAGE_SCREEN_KEY = 'greenwayStartCurrentScreen';
 const STORAGE_CHAT_KEY = 'greenwayStartChatJoined';
 
@@ -47,22 +47,6 @@ function showToast(text) {
   showToast.timer = setTimeout(() => toast.classList.remove('show'), 1600);
 }
 
-function updateStepPanel(activeName) {
-  const order = ['welcome', 'step1', 'step2'];
-  const activeIndex = order.indexOf(activeName);
-  const chatJoined = getSavedChatJoined();
-
-  stepNavItems.forEach(item => {
-    const name = item.dataset.stepNav;
-    const itemIndex = order.indexOf(name);
-    item.classList.toggle('active', name === activeName);
-
-    const isDone = itemIndex > -1 && activeIndex > itemIndex;
-    const isChatDone = name === 'step1' && chatJoined;
-    item.classList.toggle('done', isDone || isChatDone);
-  });
-}
-
 function applyScreen(name, shouldSave = true) {
   const next = document.querySelector(`[data-screen="${name}"]`);
   const safeName = next ? name : 'welcome';
@@ -71,7 +55,6 @@ function applyScreen(name, shouldSave = true) {
   screens.forEach(screen => screen.classList.remove('active'));
   if (safeNext) safeNext.classList.add('active');
   if (shouldSave) saveScreen(safeName);
-  updateStepPanel(safeName);
 }
 
 function showScreen(name) {
@@ -96,7 +79,6 @@ function restoreProgress() {
 
   if (chatJoined && chatJoinedBtn) {
     chatJoinedBtn.classList.add('checked');
-    updateStepPanel(savedScreen);
   }
 }
 
@@ -243,7 +225,6 @@ if (chatJoinedBtn) {
 
     chatJoinedBtn.classList.add('checked');
     saveChatJoined(true);
-    updateStepPanel('step1');
     fireConfetti();
     showToast('Отлично! Шаг выполнен');
 
