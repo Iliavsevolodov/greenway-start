@@ -6,6 +6,7 @@ const confettiLayer = document.getElementById('confettiLayer');
 const chatJoinedBtn = document.getElementById('chatJoinedBtn');
 const screens = Array.from(document.querySelectorAll('.flow-screen'));
 const goButtons = Array.from(document.querySelectorAll('[data-go]'));
+const copyButtons = Array.from(document.querySelectorAll('[data-copy-target]'));
 const STORAGE_SCREEN_KEY = 'greenwayStartCurrentScreen';
 const STORAGE_CHAT_KEY = 'greenwayStartChatJoined';
 
@@ -111,6 +112,42 @@ function fireConfetti() {
   }
 }
 
+async function copyTextFromElement(targetId, button) {
+  const target = document.getElementById(targetId);
+  if (!target) return;
+
+  const text = target.textContent.trim();
+  const originalText = button.textContent;
+
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      textarea.remove();
+    }
+
+    const card = button.closest('.copy-card');
+    if (card) card.classList.add('copied');
+    button.textContent = '✅ Скопировано';
+    showToast('Сообщение скопировано');
+
+    setTimeout(() => {
+      button.textContent = originalText;
+      if (card) card.classList.remove('copied');
+    }, 1800);
+  } catch (error) {
+    showToast('Не получилось скопировать');
+  }
+}
+
 restoreProgress();
 
 if (resetBtn) {
@@ -126,6 +163,12 @@ goButtons.forEach(button => {
   button.addEventListener('click', () => {
     const target = button.dataset.go;
     showScreen(target);
+  });
+});
+
+copyButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    copyTextFromElement(button.dataset.copyTarget, button);
   });
 });
 
