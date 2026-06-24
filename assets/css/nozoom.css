@@ -1,0 +1,107 @@
+/* Отключаем любое визуальное зумирование и масштабирование элементов */
+html,
+body {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  touch-action: pan-y;
+}
+
+.hero-image {
+  transform: none !important;
+}
+
+.hero-image-wrap:hover .hero-image {
+  transform: none !important;
+  filter: none !important;
+}
+
+.primary-btn:hover,
+.restart:hover,
+.intro-note:hover {
+  transform: translateY(-2px) !important;
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes imageRise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes photoFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0.15deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(-0.15deg);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(14px, -18px, 0);
+  }
+}
+
+@keyframes emojiPop {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-6deg);
+  }
+}
+
+@keyframes numberPulse {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-3deg);
+  }
+}
+
+@keyframes scriptFloat {
+  0%, 100% {
+    transform: rotate(-2deg) translateY(4px);
+  }
+  50% {
+    transform: rotate(-1deg) translateY(-1px);
+  }
+}
+
+@keyframes rocketMove {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(3px, -3px, 0) rotate(-8deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-image-wrap:hover .hero-image,
+  .hero-image {
+    transform: none !important;
+  }
+}
