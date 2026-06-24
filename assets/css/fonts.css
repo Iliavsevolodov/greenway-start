@@ -6,7 +6,7 @@ body {
 
 p, .lead, .step-text, .intro-note p {
   font-weight: 400 !important;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.005em;
 }
 
 .step-title, h1, h2 {
