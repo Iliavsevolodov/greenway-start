@@ -1,0 +1,76 @@
+/* Более взрослые радиусы: меньше мультяшности, больше премиальности */
+.welcome-card,
+.step-card {
+  border-radius: 22px !important;
+}
+
+.welcome-card::after {
+  border-radius: 16px !important;
+}
+
+.hero-image-wrap {
+  border-radius: 18px !important;
+  padding: 6px !important;
+}
+
+.hero-image,
+.hero-image-wrap::after {
+  border-radius: 14px !important;
+}
+
+.intro-note,
+.benefit-item,
+.advice-box,
+.ready-box,
+.intro-template,
+.copy-text {
+  border-radius: 16px !important;
+}
+
+.primary-btn,
+.chat-link,
+.completion-check {
+  border-radius: 18px !important;
+}
+
+.primary-btn span,
+.chat-link .chat-icon,
+.check-box {
+  border-radius: 12px !important;
+}
+
+.secondary-btn,
+.next-step-btn {
+  border-radius: 16px !important;
+}
+
+.step-label,
+.restart,
+.copy-btn {
+  border-radius: 14px !important;
+}
+
+.toast {
+  border-radius: 14px !important;
+}
+
+.primary-btn,
+.chat-link {
+  box-shadow: 5px 6px 0 var(--yellow) !important;
+}
+
+.next-step-btn,
+.completion-check.checked .check-box {
+  box-shadow: 4px 5px 0 var(--ink) !important;
+}
+
+.copy-btn {
+  box-shadow: 3px 4px 0 rgba(246, 196, 0, .65) !important;
+}
+
+@media (max-width: 640px) {
+  .welcome-card,
+  .step-card {
+    border-radius: 20px !important;
+  }
+}
