@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="assets/css/flow.css" />
   <link rel="stylesheet" href="assets/css/copy.css" />
   <link rel="stylesheet" href="assets/css/radius.css" />
+  <link rel="stylesheet" href="assets/css/steps.css" />
 </head>
 <body>
   <div class="loader" id="loader">
@@ -37,6 +38,25 @@
         <small>начать заново</small>
       </button>
     </header>
+
+    <nav class="steps-panel" aria-label="Шаги запуска">
+      <button class="step-pill" type="button" data-go="welcome" data-step-nav="welcome">
+        <span class="step-num">0</span>
+        <span class="step-name">Старт</span>
+      </button>
+      <button class="step-pill" type="button" data-go="step1" data-step-nav="step1">
+        <span class="step-num">1</span>
+        <span class="step-name">Чат</span>
+      </button>
+      <button class="step-pill" type="button" data-go="step2" data-step-nav="step2">
+        <span class="step-num">2</span>
+        <span class="step-name">Знакомство</span>
+      </button>
+      <button class="step-pill" type="button" disabled>
+        <span class="step-num">3</span>
+        <span class="step-name">Скоро</span>
+      </button>
+    </nav>
 
     <section class="welcome-card flow-screen active" data-screen="welcome">
       <div class="shine"></div>
