@@ -13,8 +13,8 @@
 .progress__bar {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #f6c400, #ffdf5a);
+  background: linear-gradient(90deg, #2f7d4a, #4caf50);
   border-radius: 999px;
   transition: width 0.45s cubic-bezier(.2,.8,.2,1);
-  box-shadow: 0 2px 10px rgba(246,196,0,0.35);
+  box-shadow: 0 2px 10px rgba(47,125,74,0.25);
 }
