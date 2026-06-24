@@ -1,9 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&display=swap');
+
 /* Отключаем любое визуальное зумирование и масштабирование элементов */
 html,
 body {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   touch-action: pan-y;
+}
+
+/* Новый более трендовый рукописный стиль для Greenway */
+.script-word {
+  font-family: 'Alex Brush', cursive !important;
+  font-size: 1.08em !important;
+  font-weight: 400 !important;
+  color: #2b7a4a !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  line-height: 0.88 !important;
+  transform: rotate(-1deg) translateY(1px) !important;
+  text-shadow:
+    0 2px 0 rgba(246, 196, 0, 0.28),
+    0 10px 20px rgba(43, 122, 74, 0.10) !important;
+}
+
+/* На всякий случай скрываем старый бейдж 01, если кэш отдаст старую верстку */
+.intro-note span {
+  display: none !important;
+}
+
+.intro-note {
+  display: block !important;
+  padding: 18px 20px !important;
+}
+
+.intro-note p {
+  margin: 0 !important;
 }
 
 .hero-image {
@@ -83,10 +114,10 @@ body {
 
 @keyframes scriptFloat {
   0%, 100% {
-    transform: rotate(-2deg) translateY(4px);
+    transform: rotate(-1deg) translateY(1px);
   }
   50% {
-    transform: rotate(-1deg) translateY(-1px);
+    transform: rotate(-0.5deg) translateY(-2px);
   }
 }
 
@@ -103,5 +134,9 @@ body {
   .hero-image-wrap:hover .hero-image,
   .hero-image {
     transform: none !important;
+  }
+
+  .script-word {
+    font-size: 1.12em !important;
   }
 }
