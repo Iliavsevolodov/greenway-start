@@ -7,8 +7,17 @@
   <title>GREENWAY START</title>
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="assets/css/nozoom.css" />
+  <link rel="stylesheet" href="assets/css/flow.css" />
 </head>
 <body>
+  <div class="loader" id="loader">
+    <div class="loader-inner">
+      <div class="loader-ring"></div>
+      <div class="loader-percent" id="loaderPercent">0%</div>
+      <div class="loader-caption">GREENWAY START</div>
+    </div>
+  </div>
+
   <div class="grain"></div>
   <div class="orb orb-one"></div>
   <div class="orb orb-two"></div>
@@ -27,7 +36,7 @@
       </button>
     </header>
 
-    <section class="welcome-card">
+    <section class="welcome-card flow-screen active" data-screen="welcome">
       <div class="shine"></div>
       <div class="watermark">GREENWAY</div>
 
@@ -48,11 +57,53 @@
           <p>Переходи к шагу номер 1, и начнём постепенно погружаться.</p>
         </div>
 
-        <button class="primary-btn" type="button" id="startBtn">
+        <button class="primary-btn" type="button" id="startBtn" data-go="step1">
           <span>🚀</span>
           <b>Перейти к шагу 1</b>
           <i>→</i>
         </button>
+      </div>
+    </section>
+
+    <section class="step-card flow-screen" data-screen="step1">
+      <div class="shine"></div>
+      <div class="watermark">CHAT</div>
+
+      <div class="step-content">
+        <div class="step-label">🧭 шаг 1 - командный чат</div>
+
+        <h2 class="step-title">Первое действие прямо сейчас</h2>
+
+        <p class="step-text">
+          Присоединись к командному чату. Этот чат - основной командный навигатор, который будет с тобой на протяжении всего пути.
+        </p>
+
+        <a class="chat-link" href="https://vk.me/join/AZQ1d8WPkSFkQIKNsv9waSB2" target="_blank" rel="noopener">
+          <span class="chat-icon">💬</span>
+          <b>Перейти в чат ВК</b>
+          <i>→</i>
+        </a>
+
+        <div class="benefit-grid">
+          <div class="benefit-item"><em>❓</em><span>Задавать любые вопросы и быстро получать ответы</span></div>
+          <div class="benefit-item"><em>📢</em><span>Узнавать последние новости, обновления и важные объявления</span></div>
+          <div class="benefit-item"><em>🤝</em><span>Получать поддержку от команды и более опытных партнёров</span></div>
+        </div>
+
+        <div class="advice-box">
+          <b>📌 Совет</b>
+          <p>🔒 Закрепи этот чат у себя - он будет с тобой весь путь.</p>
+        </div>
+
+        <div class="ready-box">
+          <b>Готов? Поехали! 🚀</b>
+          <p>После вступления в чат можно двигаться дальше к следующему этапу запуска.</p>
+        </div>
+
+        <div class="nav-row">
+          <button class="secondary-btn" type="button" data-go="welcome">← Назад</button>
+          <button class="next-step-btn" type="button">Следующий шаг скоро</button>
+        </div>
       </div>
     </section>
   </main>
