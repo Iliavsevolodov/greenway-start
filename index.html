@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="assets/css/nozoom.css" />
   <link rel="stylesheet" href="assets/css/flow.css" />
+  <link rel="stylesheet" href="assets/css/copy.css" />
 </head>
 <body>
   <div class="loader" id="loader">
@@ -124,9 +125,12 @@
           Теперь можно написать в командном чате короткое сообщение о себе, чтобы познакомиться. Команда тебя поприветствует, а наставникам будет проще понять, как тебя поддержать.
         </p>
 
-        <div class="intro-template">
-          <b>Можно написать так:</b>
-          <p>Привет! Меня зовут ... Я из ... Сейчас занимаюсь ... Мне интересен сетевой бизнес и Greenway, потому что ... Хочу разобраться, как здесь всё устроено, и начать двигаться по шагам.</p>
+        <div class="intro-template copy-card" id="introCopyCard">
+          <div class="copy-head">
+            <b>Можно написать так:</b>
+            <button class="copy-btn" type="button" data-copy-target="introMessage">📋 Скопировать</button>
+          </div>
+          <p class="copy-text" id="introMessage">Привет! Меня зовут ... Я из ... Сейчас занимаюсь ... Мне интересен сетевой бизнес и Greenway, потому что ... Хочу разобраться, как здесь всё устроено, и начать двигаться по шагам.</p>
         </div>
 
         <div class="benefit-grid">
