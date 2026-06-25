@@ -1,3 +1,18 @@
+try {
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+} catch (error) {}
+
+(function loadHardLayoutFix() {
+  const href = 'assets/css/layout-hard-fix.css?v=28';
+  if (document.querySelector(`link[href="${href}"]`)) return;
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = href;
+  document.head.appendChild(link);
+})();
+
 const resetBtn = document.getElementById('resetBtn');
 const toast = document.getElementById('toast');
 const loader = document.getElementById('loader');
@@ -13,6 +28,15 @@ const videoButtons = Array.from(document.querySelectorAll('[data-video-play]'));
 const order = ['welcome', 'step1', 'step2', 'step3', 'step4', 'step5'];
 const STORAGE_SCREEN_KEY = 'greenwayStartCurrentScreen';
 const STORAGE_CHAT_KEY = 'greenwayStartChatJoined';
+
+function forceScrollTop() {
+  try {
+    window.scrollTo(0, 0);
+    requestAnimationFrame(() => window.scrollTo(0, 0));
+    setTimeout(() => window.scrollTo(0, 0), 80);
+    setTimeout(() => window.scrollTo(0, 0), 260);
+  } catch (error) {}
+}
 
 function saveScreen(name) {
   try {
@@ -87,7 +111,7 @@ function showScreen(name) {
   setTimeout(() => {
     applyScreen(name, true);
     document.body.classList.remove('screen-leave');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    forceScrollTop();
   }, 260);
 }
 
@@ -96,6 +120,7 @@ function restoreProgress() {
   const chatJoined = getSavedChatJoined();
 
   applyScreen(savedScreen, false);
+  forceScrollTop();
 
   if (chatJoined && chatJoinedBtn) {
     chatJoinedBtn.classList.add('checked');
@@ -105,11 +130,15 @@ function restoreProgress() {
 function runLoader() {
   document.body.classList.add('loaded');
 
-  if (!loader || !loaderPercent) return;
+  if (!loader || !loaderPercent) {
+    forceScrollTop();
+    return;
+  }
 
   loaderPercent.textContent = '100%';
   setTimeout(() => {
     loader.classList.add('hide');
+    forceScrollTop();
   }, 180);
 }
 
@@ -293,6 +322,9 @@ setupRevealItems();
 setupSpotlight();
 setupTapFeeling();
 restoreProgress();
+
+window.addEventListener('load', forceScrollTop, { once: true });
+window.addEventListener('pageshow', forceScrollTop);
 
 if (resetBtn) {
   resetBtn.addEventListener('click', () => {
