@@ -4,15 +4,6 @@ try {
   }
 } catch (error) {}
 
-(function loadHardLayoutFix() {
-  const href = 'assets/css/layout-hard-fix.css?v=28';
-  if (document.querySelector(`link[href="${href}"]`)) return;
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = href;
-  document.head.appendChild(link);
-})();
-
 const resetBtn = document.getElementById('resetBtn');
 const toast = document.getElementById('toast');
 const loader = document.getElementById('loader');
@@ -28,15 +19,6 @@ const videoButtons = Array.from(document.querySelectorAll('[data-video-play]'));
 const order = ['welcome', 'step1', 'step2', 'step3', 'step4', 'step5'];
 const STORAGE_SCREEN_KEY = 'greenwayStartCurrentScreen';
 const STORAGE_CHAT_KEY = 'greenwayStartChatJoined';
-
-function forceScrollTop() {
-  try {
-    window.scrollTo(0, 0);
-    requestAnimationFrame(() => window.scrollTo(0, 0));
-    setTimeout(() => window.scrollTo(0, 0), 80);
-    setTimeout(() => window.scrollTo(0, 0), 260);
-  } catch (error) {}
-}
 
 function saveScreen(name) {
   try {
@@ -64,6 +46,12 @@ function getSavedChatJoined() {
   } catch (error) {
     return false;
   }
+}
+
+function goTop() {
+  try {
+    window.scrollTo(0, 0);
+  } catch (error) {}
 }
 
 function updateProgress(name) {
@@ -97,7 +85,6 @@ function applyScreen(name, shouldSave = true) {
   if (shouldSave) saveScreen(safeName);
 
   updateProgress(safeName);
-  requestAnimationFrame(() => refreshRevealItems(safeNext));
 }
 
 function showScreen(name) {
@@ -105,14 +92,9 @@ function showScreen(name) {
   const next = document.querySelector(`[data-screen="${name}"]`);
   if (!next || next === current) return;
 
-  document.body.classList.add('screen-leave');
+  applyScreen(name, true);
+  goTop();
   softHaptic(10);
-
-  setTimeout(() => {
-    applyScreen(name, true);
-    document.body.classList.remove('screen-leave');
-    forceScrollTop();
-  }, 260);
 }
 
 function restoreProgress() {
@@ -120,25 +102,22 @@ function restoreProgress() {
   const chatJoined = getSavedChatJoined();
 
   applyScreen(savedScreen, false);
-  forceScrollTop();
 
   if (chatJoined && chatJoinedBtn) {
     chatJoinedBtn.classList.add('checked');
   }
+
+  setTimeout(goTop, 80);
 }
 
 function runLoader() {
   document.body.classList.add('loaded');
 
-  if (!loader || !loaderPercent) {
-    forceScrollTop();
-    return;
-  }
+  if (!loader || !loaderPercent) return;
 
   loaderPercent.textContent = '100%';
   setTimeout(() => {
     loader.classList.add('hide');
-    forceScrollTop();
   }, 180);
 }
 
@@ -146,19 +125,19 @@ function fireConfetti() {
   if (!confettiLayer) return;
 
   const colors = ['#f6c400', '#17130c', '#2f7d4a', '#ffffff', '#202247'];
-  const count = 64;
+  const count = 56;
 
   for (let i = 0; i < count; i++) {
     const piece = document.createElement('span');
     piece.className = 'confetti-piece';
     piece.style.left = Math.random() * 100 + 'vw';
     piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-    piece.style.setProperty('--x', (Math.random() * 180 - 90) + 'px');
+    piece.style.setProperty('--x', (Math.random() * 160 - 80) + 'px');
     piece.style.animationDelay = Math.random() * 0.25 + 's';
-    piece.style.animationDuration = 0.9 + Math.random() * 0.65 + 's';
+    piece.style.animationDuration = 0.9 + Math.random() * 0.55 + 's';
     confettiLayer.appendChild(piece);
 
-    setTimeout(() => piece.remove(), 1900);
+    setTimeout(() => piece.remove(), 1800);
   }
 }
 
@@ -259,72 +238,8 @@ function startVideo(button) {
   softHaptic(18);
 }
 
-function setupRevealItems() {
-  const items = document.querySelectorAll('.step-content > *, .hero-content > *');
-  items.forEach((item, index) => {
-    item.classList.add('reveal-item');
-    item.style.transitionDelay = Math.min(index * 42, 260) + 'ms';
-  });
-
-  if (!('IntersectionObserver' in window)) {
-    items.forEach(item => item.classList.add('is-visible'));
-    return;
-  }
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-      }
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
-
-  items.forEach(item => observer.observe(item));
-}
-
-function refreshRevealItems(scope) {
-  if (!scope) return;
-  const items = scope.querySelectorAll('.reveal-item');
-  items.forEach((item, index) => {
-    item.classList.remove('is-visible');
-    item.style.transitionDelay = Math.min(index * 42, 260) + 'ms';
-    setTimeout(() => item.classList.add('is-visible'), 60 + index * 32);
-  });
-}
-
-function setupSpotlight() {
-  const cards = document.querySelectorAll('.welcome-card, .step-card');
-  cards.forEach(card => {
-    card.addEventListener('pointermove', (event) => {
-      const rect = card.getBoundingClientRect();
-      const x = ((event.clientX - rect.left) / rect.width) * 100;
-      const y = ((event.clientY - rect.top) / rect.height) * 100;
-      card.style.setProperty('--spot-x', x + '%');
-      card.style.setProperty('--spot-y', y + '%');
-    });
-  });
-}
-
-function setupTapFeeling() {
-  const activeTargets = document.querySelectorAll('button, a, .app-shot, .product-line, .metric-card, .social-card, .app-feature, .benefit-item');
-  activeTargets.forEach(target => {
-    target.addEventListener('pointerdown', () => {
-      document.body.classList.add('is-tapping');
-    });
-    target.addEventListener('pointerup', () => {
-      setTimeout(() => document.body.classList.remove('is-tapping'), 120);
-    });
-    target.addEventListener('pointercancel', () => document.body.classList.remove('is-tapping'));
-  });
-}
-
-setupRevealItems();
-setupSpotlight();
-setupTapFeeling();
 restoreProgress();
-
-window.addEventListener('load', forceScrollTop, { once: true });
-window.addEventListener('pageshow', forceScrollTop);
+window.addEventListener('load', () => setTimeout(goTop, 80), { once: true });
 
 if (resetBtn) {
   resetBtn.addEventListener('click', () => {
