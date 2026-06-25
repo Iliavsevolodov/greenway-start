@@ -135,7 +135,8 @@
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 74%;
-  gap: 4px;
+  column-gap: 4px !important;
+  gap: 4px !important;
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
@@ -149,6 +150,7 @@
 }
 
 .app-shot {
+  margin: 0 !important;
   scroll-snap-align: start;
   border-radius: 24px;
   overflow: hidden;
@@ -193,10 +195,12 @@
 
   .app-gallery {
     grid-auto-columns: 84%;
-    gap: 4px;
+    column-gap: 4px !important;
+    gap: 4px !important;
   }
 
   .app-shot {
+    margin: 0 !important;
     min-height: 460px;
     border-radius: 22px;
   }
