@@ -1,4 +1,4 @@
-/* Hard layout fix: removes unwanted top gaps and restores smooth vertical scroll */
+/* Hard layout fix: decorative layers must not create scroll overflow */
 html,
 body {
   margin: 0 !important;
@@ -20,7 +20,7 @@ body {
   position: relative !important;
 }
 
-/* Декор больше не должен участвовать в расчёте скролла и позиции экрана */
+/* Глобальный декоративный фон отключаем в safe-mode: именно он мог создавать странный scroll-area в iOS WebView */
 body::before,
 body::after,
 .grain,
@@ -37,7 +37,7 @@ body::after,
   left: auto !important;
   right: auto !important;
   margin: 0 auto !important;
-  padding-top: 6px !important;
+  padding-top: 4px !important;
   min-height: 0 !important;
   height: auto !important;
   max-height: none !important;
@@ -87,13 +87,26 @@ body.loaded .app {
   animation: none !important;
 }
 
+/* ВАЖНО: карточки должны обрезать shine/watermark. Если оставить overflow:visible, абсолютный декор расширяет scroll-area */
 .welcome-card,
 .step-card {
+  position: relative !important;
   margin-top: 0 !important;
   min-height: auto !important;
   height: auto !important;
   max-height: none !important;
   transform: none !important;
+  overflow: hidden !important;
+  contain: paint !important;
+}
+
+.shine,
+.watermark,
+.welcome-card::before,
+.welcome-card::after,
+.step-card::before,
+.step-card::after {
+  pointer-events: none !important;
 }
 
 .hero-content,
