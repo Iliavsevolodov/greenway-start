@@ -20,6 +20,17 @@ body {
   position: relative !important;
 }
 
+/* Декор больше не должен участвовать в расчёте скролла и позиции экрана */
+body::before,
+body::after,
+.grain,
+.orb {
+  display: none !important;
+  content: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 .app {
   position: relative !important;
   top: auto !important;
@@ -63,6 +74,7 @@ body.loaded .app {
   max-height: none !important;
   transform: none !important;
   overflow: visible !important;
+  animation: none !important;
 }
 
 .flow-screen:not(.active) {
@@ -72,6 +84,7 @@ body.loaded .app {
 .flow-screen.active {
   display: block !important;
   transform: none !important;
+  animation: none !important;
 }
 
 .welcome-card,
