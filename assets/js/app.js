@@ -10,9 +10,8 @@ function loadCssOnce(href) {
   document.head.appendChild(link);
 }
 
-loadCssOnce('assets/css/rating-step.css?v=37');
-loadCssOnce('assets/css/page-transition.css?v=37');
-loadCssOnce('assets/css/no-bottom-space.css?v=37');
+loadCssOnce('assets/css/rating-step.css?v=38');
+loadCssOnce('assets/css/page-transition.css?v=38');
 
 const resetBtn = document.getElementById('resetBtn');
 const toast = document.getElementById('toast');
@@ -26,48 +25,6 @@ const order = ['welcome', 'step1', 'step2', 'step3', 'step4', 'step5', 'step6'];
 const STORAGE_SCREEN_KEY = 'greenwayStartCurrentScreen';
 const STORAGE_CHAT_KEY = 'greenwayStartChatJoined';
 const STORAGE_RATING_KEY = 'greenwayStartStageRating';
-
-function syncDocumentHeight() {
-  try {
-    const app = document.querySelector('.app');
-    if (!app) return;
-
-    const height = Math.ceil(app.getBoundingClientRect().height);
-    const nextHeight = Math.max(height, 1);
-
-    document.documentElement.style.minHeight = '0px';
-    document.body.style.minHeight = '0px';
-    document.documentElement.style.height = `${nextHeight}px`;
-    document.body.style.height = `${nextHeight}px`;
-    document.documentElement.style.paddingBottom = '0px';
-    document.body.style.paddingBottom = '0px';
-  } catch (error) {}
-}
-
-function goTop() {
-  try {
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-  } catch (error) {}
-}
-
-function forceTopAfterRender() {
-  syncDocumentHeight();
-  goTop();
-  requestAnimationFrame(() => {
-    syncDocumentHeight();
-    goTop();
-  });
-  setTimeout(() => {
-    syncDocumentHeight();
-    goTop();
-  }, 60);
-  setTimeout(() => {
-    syncDocumentHeight();
-    goTop();
-  }, 220);
-}
 
 function saveScreen(name) {
   try { localStorage.setItem(STORAGE_SCREEN_KEY, name); } catch (error) {}
@@ -91,6 +48,18 @@ function saveRating(value) {
 
 function getSavedRating() {
   try { return Number(localStorage.getItem(STORAGE_RATING_KEY) || '0'); } catch (error) { return 0; }
+}
+
+function goTop() {
+  window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+}
+
+function goTopAfterRender() {
+  goTop();
+  requestAnimationFrame(goTop);
+  setTimeout(goTop, 60);
 }
 
 function showToast(text) {
@@ -148,6 +117,7 @@ function ensureRatingStep() {
       </div>
     </div>
   `;
+
   app.appendChild(section);
 
   const appNextButton = document.querySelector('[data-screen="step5"] .next-step-btn');
@@ -160,47 +130,45 @@ function ensureRatingStep() {
 function applyScreen(name, shouldSave = true) {
   const next = document.querySelector(`[data-screen="${name}"]`);
   const safeName = next ? name : 'welcome';
-
-  document.querySelectorAll('.flow-screen').forEach(screen => screen.classList.remove('active'));
   const safeNext = document.querySelector(`[data-screen="${safeName}"]`);
-  if (safeNext) safeNext.classList.add('active');
+
+  document.querySelectorAll('.flow-screen').forEach(screen => {
+    screen.classList.remove('active');
+    screen.setAttribute('hidden', '');
+  });
+
+  if (safeNext) {
+    safeNext.removeAttribute('hidden');
+    safeNext.classList.add('active');
+  }
 
   if (shouldSave) saveScreen(safeName);
   updateProgress(safeName);
-  syncDocumentHeight();
 }
 
 function showScreen(name) {
   const next = document.querySelector(`[data-screen="${name}"]`);
-  if (!next) return;
-
   const current = document.querySelector('.flow-screen.active');
-  if (!current || current === next) {
-    applyScreen(name, true);
-    forceTopAfterRender();
-    return;
-  }
+  if (!next || next === current) return;
 
   document.body.classList.add('page-transitioning');
   softHaptic(10);
 
   setTimeout(() => {
     applyScreen(name, true);
-    forceTopAfterRender();
+    goTopAfterRender();
     document.body.classList.remove('page-transitioning');
-  }, 180);
+  }, 160);
 }
 
 function runLoader() {
   document.body.classList.add('loaded');
-  if (!loader || !loaderPercent) {
-    forceTopAfterRender();
-    return;
-  }
+  if (!loader || !loaderPercent) return;
+
   loaderPercent.textContent = '100%';
   setTimeout(() => {
     loader.classList.add('hide');
-    forceTopAfterRender();
+    goTopAfterRender();
   }, 180);
 }
 
@@ -248,9 +216,9 @@ function setRating(value, animate = true) {
       ? 'Класс! Значит, первый этап зашёл максимально понятно 🚀'
       : `Спасибо! Твоя оценка: ${value} из 5`;
   }
+
   if (nextBtn) nextBtn.classList.add('is-visible');
   saveRating(value);
-  syncDocumentHeight();
 
   if (animate) {
     fireRatingSparks();
@@ -307,7 +275,6 @@ async function copyTextFromElement(targetId, button) {
     setTimeout(() => {
       button.textContent = originalText;
       if (card) card.classList.remove('copied');
-      syncDocumentHeight();
     }, 1800);
   } else {
     showToast('Зажми текст и скопируй вручную');
@@ -331,7 +298,6 @@ function startVideo(button) {
   card.classList.add('is-playing');
   showToast('Запускаю видео');
   softHaptic(18);
-  setTimeout(syncDocumentHeight, 120);
 }
 
 function bindEvents() {
@@ -364,32 +330,27 @@ function bindEvents() {
     ratingNextBtn.dataset.boundNext = '1';
     ratingNextBtn.addEventListener('click', () => {
       showToast('Скоро откроем следующий этап');
-      forceTopAfterRender();
       softHaptic(16);
     });
   }
 }
 
 function restoreProgress() {
-  const savedScreen = getSavedScreen();
-  applyScreen(savedScreen, false);
+  ensureRatingStep();
+  applyScreen(getSavedScreen(), false);
 
   if (getSavedChatJoined() && chatJoinedBtn) chatJoinedBtn.classList.add('checked');
   const savedRating = getSavedRating();
   if (savedRating > 0) setRating(savedRating, false);
 
-  forceTopAfterRender();
+  goTopAfterRender();
 }
 
 ensureRatingStep();
 bindEvents();
 restoreProgress();
-window.addEventListener('load', forceTopAfterRender, { once: true });
-window.addEventListener('pageshow', forceTopAfterRender);
-window.addEventListener('resize', syncDocumentHeight);
-document.querySelectorAll('img').forEach(img => {
-  if (!img.complete) img.addEventListener('load', syncDocumentHeight, { once: true });
-});
+window.addEventListener('load', goTopAfterRender, { once: true });
+window.addEventListener('pageshow', goTopAfterRender);
 
 if (resetBtn) {
   resetBtn.addEventListener('click', () => {
