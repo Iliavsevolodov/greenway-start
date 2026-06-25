@@ -9,7 +9,7 @@ const screens = Array.from(document.querySelectorAll('.flow-screen'));
 const goButtons = Array.from(document.querySelectorAll('[data-go]'));
 const copyButtons = Array.from(document.querySelectorAll('[data-copy-target]'));
 
-const order = ['welcome', 'step1', 'step2'];
+const order = ['welcome', 'step1', 'step2', 'step3'];
 const STORAGE_SCREEN_KEY = 'greenwayStartCurrentScreen';
 const STORAGE_CHAT_KEY = 'greenwayStartChatJoined';
 
