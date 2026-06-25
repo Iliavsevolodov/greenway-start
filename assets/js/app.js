@@ -3,7 +3,16 @@ try {
 } catch (error) {}
 
 (function loadRatingStyles() {
-  const href = 'assets/css/rating-step.css?v=34';
+  const href = 'assets/css/rating-step.css?v=36';
+  if (document.querySelector(`link[href="${href}"]`)) return;
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = href;
+  document.head.appendChild(link);
+})();
+
+(function loadPageTransitionStyles() {
+  const href = 'assets/css/page-transition.css?v=36';
   if (document.querySelector(`link[href="${href}"]`)) return;
   const link = document.createElement('link');
   link.rel = 'stylesheet';
@@ -142,9 +151,22 @@ function applyScreen(name, shouldSave = true) {
 function showScreen(name) {
   const next = document.querySelector(`[data-screen="${name}"]`);
   if (!next) return;
-  applyScreen(name, true);
-  forceTopAfterRender();
+
+  const current = document.querySelector('.flow-screen.active');
+  if (!current || current === next) {
+    applyScreen(name, true);
+    forceTopAfterRender();
+    return;
+  }
+
+  document.body.classList.add('page-transitioning');
   softHaptic(10);
+
+  setTimeout(() => {
+    applyScreen(name, true);
+    forceTopAfterRender();
+    document.body.classList.remove('page-transitioning');
+  }, 180);
 }
 
 function runLoader() {
