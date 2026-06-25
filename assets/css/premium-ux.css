@@ -1,12 +1,11 @@
-/* Safe premium UX layer - clean spacing, stable scroll, wow without layout conflicts */
+/* Clean white premium UX layer - no decorative background elements, stable scroll */
 :root {
   --ux-ink: #11130f;
   --ux-muted: #625949;
   --ux-green: #2f7d4a;
-  --ux-green-2: #67c987;
+  --ux-green-soft: rgba(47, 125, 74, .10);
   --ux-yellow: #f6c400;
-  --ux-card: rgba(255, 255, 255, .76);
-  --ux-border: rgba(255, 255, 255, .86);
+  --ux-border: rgba(20, 28, 22, .07);
 }
 
 * {
@@ -31,17 +30,24 @@ body {
   position: relative !important;
   align-items: initial !important;
   justify-content: flex-start !important;
-  background:
-    radial-gradient(circle at 8% 4%, rgba(255, 255, 255, .98), transparent 22%),
-    radial-gradient(circle at 88% 6%, rgba(103, 201, 135, .20), transparent 26%),
-    radial-gradient(circle at 8% 76%, rgba(246, 196, 0, .10), transparent 22%),
-    linear-gradient(180deg, #fbfdfb 0%, #f5faf6 44%, #eef6f0 100%) !important;
   color: var(--ux-ink);
+  background:
+    radial-gradient(circle at 86% 2%, rgba(47, 125, 74, .10), transparent 28%),
+    radial-gradient(circle at 12% 40%, rgba(246, 196, 0, .055), transparent 26%),
+    radial-gradient(circle at 92% 82%, rgba(47, 125, 74, .055), transparent 28%),
+    #ffffff !important;
 }
 
 body::before,
-body::after {
-  pointer-events: none !important;
+body::after,
+.grain,
+.orb,
+.orb-one,
+.orb-two,
+.orb-three {
+  display: none !important;
+  content: none !important;
+  animation: none !important;
 }
 
 .app {
@@ -51,7 +57,7 @@ body::after {
   min-height: 0 !important;
   height: auto !important;
   margin: 0 auto !important;
-  padding: 8px 14px 88px !important;
+  padding: 8px 12px 96px !important;
   overflow: visible !important;
   transform: none !important;
   perspective: none !important;
@@ -69,12 +75,12 @@ body.loaded .app {
   margin: 0 0 8px !important;
   padding: 8px 10px !important;
   border-radius: 18px !important;
-  border: 1px solid rgba(255, 255, 255, .82) !important;
-  background: rgba(255, 255, 255, .72) !important;
-  backdrop-filter: blur(18px) saturate(1.14);
-  -webkit-backdrop-filter: blur(18px) saturate(1.14);
+  border: 1px solid rgba(18, 24, 19, .06) !important;
+  background: rgba(255, 255, 255, .86) !important;
+  backdrop-filter: blur(16px) saturate(1.08);
+  -webkit-backdrop-filter: blur(16px) saturate(1.08);
   box-shadow:
-    0 14px 34px rgba(23, 31, 25, .08),
+    0 12px 30px rgba(20, 28, 22, .075),
     inset 0 1px 0 rgba(255, 255, 255, .96) !important;
 }
 
@@ -95,7 +101,7 @@ body.loaded .app {
   min-height: 42px !important;
   padding: 0 12px !important;
   border-radius: 15px !important;
-  background: rgba(255,255,255,.78) !important;
+  background: rgba(255, 255, 255, .92) !important;
 }
 
 .progress {
@@ -104,14 +110,14 @@ body.loaded .app {
   height: 4px !important;
   margin: 0 14px 12px !important;
   border-radius: 999px !important;
-  background: rgba(255, 255, 255, .68) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.9) !important;
+  background: rgba(18, 24, 19, .055) !important;
+  box-shadow: none !important;
   overflow: hidden !important;
 }
 
 .progress__bar {
-  background: linear-gradient(90deg, #263228, #2f7d4a 55%, #79d990) !important;
-  box-shadow: 0 0 18px rgba(87, 185, 112, .32) !important;
+  background: linear-gradient(90deg, #17130c, #2f7d4a 58%, #79d990) !important;
+  box-shadow: 0 0 14px rgba(87, 185, 112, .24) !important;
 }
 
 .flow-screen {
@@ -132,13 +138,8 @@ body.loaded .app {
 
 .flow-screen.active {
   display: block !important;
-  animation: screenFade .22s ease both !important;
+  animation: none !important;
   transform: none !important;
-}
-
-@keyframes screenFade {
-  from { opacity: .86; }
-  to { opacity: 1; }
 }
 
 .welcome-card,
@@ -151,24 +152,26 @@ body.loaded .app {
   margin: 0 !important;
   padding: 0 !important;
   overflow: hidden !important;
-  border-radius: 26px !important;
-  border: 1px solid var(--ux-border) !important;
+  border-radius: 24px !important;
+  border: 1px solid rgba(18, 24, 19, .065) !important;
   background:
-    radial-gradient(circle at 92% 6%, rgba(103, 201, 135, .13), transparent 28%),
-    linear-gradient(180deg, rgba(255,255,255,.84), rgba(255,255,255,.64)) !important;
+    radial-gradient(circle at 92% 4%, rgba(47, 125, 74, .08), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(250, 253, 251, .92)) !important;
   box-shadow:
-    0 22px 60px rgba(24, 35, 28, .12),
-    0 0 34px rgba(87, 185, 112, .08),
-    inset 0 1px 0 rgba(255,255,255,.96) !important;
+    0 20px 54px rgba(20, 28, 22, .10),
+    0 0 28px rgba(47, 125, 74, .055),
+    inset 0 1px 0 rgba(255, 255, 255, .98) !important;
   transform: none !important;
-  backdrop-filter: blur(16px) saturate(1.12);
-  -webkit-backdrop-filter: blur(16px) saturate(1.12);
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 .welcome-card::before,
-.step-card::before {
-  opacity: .72 !important;
+.step-card::before,
+.welcome-card::after,
+.step-card::after {
   pointer-events: none !important;
+  opacity: .42 !important;
 }
 
 .hero-content,
@@ -176,12 +179,12 @@ body.loaded .app {
   position: relative !important;
   z-index: 2 !important;
   display: grid !important;
-  gap: 18px !important;
+  gap: 16px !important;
   width: 100% !important;
   height: auto !important;
   min-height: 0 !important;
   margin: 0 !important;
-  padding: 24px !important;
+  padding: 20px !important;
   overflow: visible !important;
 }
 
@@ -191,22 +194,22 @@ h1,
   color: #15120c !important;
   letter-spacing: -0.058em !important;
   text-wrap: balance;
-  text-shadow: 0 8px 24px rgba(24,35,28,.08);
+  text-shadow: none !important;
 }
 
 h1 {
-  font-size: clamp(44px, 11.8vw, 82px) !important;
-  line-height: .88 !important;
+  font-size: clamp(42px, 11.2vw, 68px) !important;
+  line-height: .9 !important;
 }
 
 .step-title {
-  font-size: clamp(38px, 10vw, 68px) !important;
-  line-height: .92 !important;
+  font-size: clamp(36px, 9.4vw, 58px) !important;
+  line-height: .94 !important;
 }
 
 [data-screen="step3"] .step-title {
-  font-size: clamp(34px, 8.6vw, 58px) !important;
-  line-height: .94 !important;
+  font-size: clamp(31px, 8.4vw, 48px) !important;
+  line-height: .96 !important;
 }
 
 .lead,
@@ -223,7 +226,7 @@ h1 {
 .lead,
 .step-text {
   margin: 0 !important;
-  font-size: clamp(17px, 4.4vw, 22px) !important;
+  font-size: 18px !important;
   max-width: 62ch !important;
 }
 
@@ -232,9 +235,9 @@ h1 {
   min-height: 36px !important;
   padding: 0 13px !important;
   border-radius: 999px !important;
-  background: rgba(255,255,255,.78) !important;
-  border: 1px solid rgba(255,255,255,.88) !important;
-  box-shadow: 0 10px 22px rgba(24,35,28,.07), inset 0 1px 0 rgba(255,255,255,.95) !important;
+  background: rgba(255, 255, 255, .92) !important;
+  border: 1px solid rgba(18, 24, 19, .06) !important;
+  box-shadow: 0 8px 22px rgba(20, 28, 22, .06) !important;
 }
 
 .hero-image-wrap,
@@ -258,8 +261,8 @@ h1 {
 .rating-box {
   border-radius: 18px !important;
   box-shadow:
-    0 14px 34px rgba(28, 38, 32, .075),
-    inset 0 1px 0 rgba(255, 255, 255, .92) !important;
+    0 12px 30px rgba(20, 28, 22, .07),
+    inset 0 1px 0 rgba(255, 255, 255, .94) !important;
 }
 
 .hero-image-wrap {
@@ -353,17 +356,17 @@ h1 {
   }
 
   h1 {
-    font-size: clamp(43px, 11.6vw, 62px) !important;
+    font-size: clamp(42px, 11.2vw, 60px) !important;
     line-height: .9 !important;
   }
 
   .step-title {
-    font-size: clamp(36px, 9.8vw, 54px) !important;
+    font-size: clamp(34px, 9.4vw, 52px) !important;
     line-height: .94 !important;
   }
 
   [data-screen="step3"] .step-title {
-    font-size: clamp(32px, 8.8vw, 46px) !important;
+    font-size: clamp(30px, 8.2vw, 44px) !important;
   }
 
   .lead,
