@@ -1,0 +1,24 @@
+/* Video cover images for VK embeds */
+.video-cover.has-cover {
+  background:
+    linear-gradient(135deg, rgba(10, 14, 12, 0.18), rgba(10, 14, 12, 0.58)),
+    radial-gradient(circle at 50% 42%, rgba(255,255,255,.12), transparent 18%),
+    var(--cover-image) center center / cover no-repeat !important;
+}
+
+.video-cover.has-cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.10), transparent 26%),
+    radial-gradient(circle at 18% 20%, rgba(255,255,255,.22), transparent 16%),
+    radial-gradient(circle at 82% 22%, rgba(87,185,112,.16), transparent 18%);
+  pointer-events: none;
+}
+
+.video-cover.has-cover .play-button,
+.video-cover.has-cover .video-caption {
+  position: relative;
+  z-index: 1;
+}
