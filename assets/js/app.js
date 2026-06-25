@@ -4,6 +4,15 @@ try {
   }
 } catch (error) {}
 
+(function loadRatingStyles() {
+  const href = 'assets/css/rating-step.css?v=30';
+  if (document.querySelector(`link[href="${href}"]`)) return;
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = href;
+  document.head.appendChild(link);
+})();
+
 const resetBtn = document.getElementById('resetBtn');
 const toast = document.getElementById('toast');
 const loader = document.getElementById('loader');
@@ -16,9 +25,66 @@ const goButtons = Array.from(document.querySelectorAll('[data-go]'));
 const copyButtons = Array.from(document.querySelectorAll('[data-copy-target]'));
 const videoButtons = Array.from(document.querySelectorAll('[data-video-play]'));
 
-const order = ['welcome', 'step1', 'step2', 'step3', 'step4', 'step5'];
+const order = ['welcome', 'step1', 'step2', 'step3', 'step4', 'step5', 'step6'];
 const STORAGE_SCREEN_KEY = 'greenwayStartCurrentScreen';
 const STORAGE_CHAT_KEY = 'greenwayStartChatJoined';
+const STORAGE_RATING_KEY = 'greenwayStartStageRating';
+
+function ensureRatingStep() {
+  if (document.querySelector('[data-screen="step6"]')) return;
+
+  const app = document.querySelector('.app');
+  if (!app) return;
+
+  const section = document.createElement('section');
+  section.className = 'step-card flow-screen';
+  section.dataset.screen = 'step6';
+  section.innerHTML = `
+    <div class="shine"></div>
+    <div class="watermark">DONE</div>
+    <div class="step-content">
+      <div class="step-label">🎉 первый этап завершён</div>
+      <h2 class="step-title">Первый этап пройден</h2>
+      <div class="rating-summary">
+        <b>Ты зарегистрирован, познакомился с компанией и нашей командой, и уже начал погружаться в суть бизнеса.</b>
+        <p>Теперь пора перейти к действиям, с которых начинается рост в сетевом бизнесе.</p>
+      </div>
+      <div class="rating-box">
+        <div class="rating-question">Оцени, как тебе информация. 5 звёзд - максимально понятно и интересно.</div>
+        <div class="star-rating" role="radiogroup" aria-label="Оценка информации">
+          <button class="rating-star" type="button" data-rating="1" aria-label="1 звезда"></button>
+          <button class="rating-star" type="button" data-rating="2" aria-label="2 звезды"></button>
+          <button class="rating-star" type="button" data-rating="3" aria-label="3 звезды"></button>
+          <button class="rating-star" type="button" data-rating="4" aria-label="4 звезды"></button>
+          <button class="rating-star" type="button" data-rating="5" aria-label="5 звёзд"></button>
+        </div>
+        <div class="rating-result" id="ratingResult">Нажми на звёздочки, чтобы поставить оценку</div>
+        <div class="rating-sparks" id="ratingSparks"></div>
+        <button class="next-step-btn rating-next" type="button" id="ratingNextBtn">Двигаемся дальше</button>
+      </div>
+      <div class="nav-row one-col">
+        <button class="secondary-btn" type="button" data-go="step5">← Назад</button>
+      </div>
+    </div>
+  `;
+
+  app.appendChild(section);
+
+  const appNextButton = document.querySelector('[data-screen="step5"] .next-step-btn');
+  if (appNextButton) {
+    appNextButton.dataset.go = 'step6';
+    appNextButton.textContent = 'Дальше →';
+  }
+}
+
+function refreshCollections() {
+  return {
+    screens: Array.from(document.querySelectorAll('.flow-screen')),
+    goButtons: Array.from(document.querySelectorAll('[data-go]')),
+    copyButtons: Array.from(document.querySelectorAll('[data-copy-target]')),
+    videoButtons: Array.from(document.querySelectorAll('[data-video-play]'))
+  };
+}
 
 function saveScreen(name) {
   try {
@@ -29,6 +95,12 @@ function saveScreen(name) {
 function saveChatJoined(value) {
   try {
     localStorage.setItem(STORAGE_CHAT_KEY, value ? '1' : '0');
+  } catch (error) {}
+}
+
+function saveRating(value) {
+  try {
+    localStorage.setItem(STORAGE_RATING_KEY, String(value));
   } catch (error) {}
 }
 
@@ -45,6 +117,14 @@ function getSavedChatJoined() {
     return localStorage.getItem(STORAGE_CHAT_KEY) === '1';
   } catch (error) {
     return false;
+  }
+}
+
+function getSavedRating() {
+  try {
+    return Number(localStorage.getItem(STORAGE_RATING_KEY) || '0');
+  } catch (error) {
+    return 0;
   }
 }
 
@@ -76,11 +156,12 @@ function softHaptic(duration = 12) {
 }
 
 function applyScreen(name, shouldSave = true) {
+  const currentScreens = Array.from(document.querySelectorAll('.flow-screen'));
   const next = document.querySelector(`[data-screen="${name}"]`);
   const safeName = next ? name : 'welcome';
   const safeNext = document.querySelector(`[data-screen="${safeName}"]`);
 
-  screens.forEach(screen => screen.classList.remove('active'));
+  currentScreens.forEach(screen => screen.classList.remove('active'));
   if (safeNext) safeNext.classList.add('active');
   if (shouldSave) saveScreen(safeName);
 
@@ -100,11 +181,16 @@ function showScreen(name) {
 function restoreProgress() {
   const savedScreen = getSavedScreen();
   const chatJoined = getSavedChatJoined();
+  const savedRating = getSavedRating();
 
   applyScreen(savedScreen, false);
 
   if (chatJoined && chatJoinedBtn) {
     chatJoinedBtn.classList.add('checked');
+  }
+
+  if (savedRating > 0) {
+    setRating(savedRating, false);
   }
 
   setTimeout(goTop, 80);
@@ -138,6 +224,49 @@ function fireConfetti() {
     confettiLayer.appendChild(piece);
 
     setTimeout(() => piece.remove(), 1800);
+  }
+}
+
+function fireRatingSparks() {
+  const sparks = document.getElementById('ratingSparks');
+  if (!sparks) return;
+
+  for (let i = 0; i < 14; i++) {
+    const spark = document.createElement('span');
+    spark.style.setProperty('--x', (Math.random() * 160 - 80) + 'px');
+    spark.style.setProperty('--y', (-18 - Math.random() * 60) + 'px');
+    spark.style.animationDelay = Math.random() * 0.12 + 's';
+    sparks.appendChild(spark);
+    setTimeout(() => spark.remove(), 800);
+  }
+}
+
+function setRating(value, animate = true) {
+  const stars = Array.from(document.querySelectorAll('.rating-star'));
+  const result = document.getElementById('ratingResult');
+  const nextBtn = document.getElementById('ratingNextBtn');
+
+  stars.forEach(star => {
+    const starValue = Number(star.dataset.rating);
+    star.classList.toggle('is-active', starValue <= value);
+  });
+
+  if (result) {
+    result.textContent = value === 5
+      ? 'Класс! Значит, первый этап зашёл максимально понятно 🚀'
+      : `Спасибо! Твоя оценка: ${value} из 5`;
+  }
+
+  if (nextBtn) {
+    nextBtn.classList.add('is-visible');
+  }
+
+  saveRating(value);
+
+  if (animate) {
+    fireRatingSparks();
+    softHaptic(20);
+    showToast('Оценка сохранена');
   }
 }
 
@@ -238,6 +367,52 @@ function startVideo(button) {
   softHaptic(18);
 }
 
+function bindDynamicEvents() {
+  document.querySelectorAll('[data-go]').forEach(button => {
+    if (button.dataset.boundGo === '1') return;
+    button.dataset.boundGo = '1';
+    button.addEventListener('click', () => {
+      const target = button.dataset.go;
+      showScreen(target);
+    });
+  });
+
+  document.querySelectorAll('[data-copy-target]').forEach(button => {
+    if (button.dataset.boundCopy === '1') return;
+    button.dataset.boundCopy = '1';
+    button.addEventListener('click', () => {
+      copyTextFromElement(button.dataset.copyTarget, button);
+    });
+  });
+
+  document.querySelectorAll('[data-video-play]').forEach(button => {
+    if (button.dataset.boundVideo === '1') return;
+    button.dataset.boundVideo = '1';
+    button.addEventListener('click', () => {
+      startVideo(button);
+    });
+  });
+
+  document.querySelectorAll('.rating-star').forEach(button => {
+    if (button.dataset.boundRating === '1') return;
+    button.dataset.boundRating = '1';
+    button.addEventListener('click', () => {
+      setRating(Number(button.dataset.rating || '0'));
+    });
+  });
+
+  const ratingNextBtn = document.getElementById('ratingNextBtn');
+  if (ratingNextBtn && ratingNextBtn.dataset.boundNext !== '1') {
+    ratingNextBtn.dataset.boundNext = '1';
+    ratingNextBtn.addEventListener('click', () => {
+      showToast('Скоро откроем следующий этап');
+      softHaptic(16);
+    });
+  }
+}
+
+ensureRatingStep();
+bindDynamicEvents();
 restoreProgress();
 window.addEventListener('load', () => setTimeout(goTop, 80), { once: true });
 
@@ -245,30 +420,12 @@ if (resetBtn) {
   resetBtn.addEventListener('click', () => {
     if (chatJoinedBtn) chatJoinedBtn.classList.remove('checked');
     saveChatJoined(false);
+    saveRating(0);
     showScreen('welcome');
     showToast('Начинаем заново');
     softHaptic(14);
   });
 }
-
-goButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    const target = button.dataset.go;
-    showScreen(target);
-  });
-});
-
-copyButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    copyTextFromElement(button.dataset.copyTarget, button);
-  });
-});
-
-videoButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    startVideo(button);
-  });
-});
 
 if (chatJoinedBtn) {
   chatJoinedBtn.addEventListener('click', () => {
