@@ -1,0 +1,119 @@
+/* Hard layout fix: removes unwanted top gaps and restores smooth vertical scroll */
+html,
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 100% !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior-y: auto !important;
+  touch-action: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+body {
+  display: block !important;
+  align-items: initial !important;
+  justify-content: flex-start !important;
+  position: relative !important;
+}
+
+.app {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  margin: 0 auto !important;
+  padding-top: 6px !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  transform: none !important;
+  perspective: none !important;
+  overflow: visible !important;
+}
+
+body.loaded .app {
+  transform: none !important;
+}
+
+.topbar {
+  position: relative !important;
+  top: auto !important;
+  margin-top: 0 !important;
+  margin-bottom: 10px !important;
+}
+
+.progress {
+  position: relative !important;
+  top: auto !important;
+  margin-top: 0 !important;
+  margin-bottom: 14px !important;
+}
+
+.flow-screen {
+  position: relative !important;
+  top: auto !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  transform: none !important;
+  overflow: visible !important;
+}
+
+.flow-screen:not(.active) {
+  display: none !important;
+}
+
+.flow-screen.active {
+  display: block !important;
+  transform: none !important;
+}
+
+.welcome-card,
+.step-card {
+  margin-top: 0 !important;
+  min-height: auto !important;
+  height: auto !important;
+  max-height: none !important;
+  transform: none !important;
+}
+
+.hero-content,
+.step-content {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.loader.hide {
+  display: none !important;
+}
+
+.app-gallery {
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  touch-action: pan-x !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+@media (max-width: 640px) {
+  .app {
+    padding-top: 4px !important;
+  }
+
+  .topbar {
+    margin-bottom: 8px !important;
+  }
+
+  .progress {
+    margin-bottom: 12px !important;
+  }
+}
