@@ -1,87 +1,127 @@
-/* Safe premium layer - visual polish without scroll blockers */
+/* Safe premium UX layer - clean spacing, stable scroll, wow without layout conflicts */
 :root {
   --ux-ink: #11130f;
+  --ux-muted: #625949;
   --ux-green: #2f7d4a;
   --ux-green-2: #67c987;
   --ux-yellow: #f6c400;
+  --ux-card: rgba(255, 255, 255, .76);
+  --ux-border: rgba(255, 255, 255, .86);
+}
+
+* {
+  box-sizing: border-box;
 }
 
 html,
 body {
   margin: 0 !important;
   padding: 0 !important;
+  width: 100% !important;
   height: auto !important;
   min-height: 100% !important;
   overflow-x: hidden !important;
   overflow-y: auto !important;
-  touch-action: pan-y !important;
+  touch-action: auto !important;
   -webkit-overflow-scrolling: touch !important;
 }
 
 body {
   display: block !important;
   position: relative !important;
+  align-items: initial !important;
+  justify-content: flex-start !important;
   background:
-    radial-gradient(circle at 12% 4%, rgba(255,255,255,.96), transparent 24%),
-    radial-gradient(circle at 92% 10%, rgba(87,185,112,.16), transparent 26%),
-    radial-gradient(circle at 20% 88%, rgba(246,196,0,.08), transparent 24%),
-    linear-gradient(180deg, #fbfdfb 0%, #f4f8f4 48%, #edf5ee 100%) !important;
+    radial-gradient(circle at 8% 4%, rgba(255, 255, 255, .98), transparent 22%),
+    radial-gradient(circle at 88% 6%, rgba(103, 201, 135, .20), transparent 26%),
+    radial-gradient(circle at 8% 76%, rgba(246, 196, 0, .10), transparent 22%),
+    linear-gradient(180deg, #fbfdfb 0%, #f5faf6 44%, #eef6f0 100%) !important;
+  color: var(--ux-ink);
+}
+
+body::before,
+body::after {
+  pointer-events: none !important;
 }
 
 .app {
   position: relative !important;
   z-index: 2;
-  width: min(100%, 940px) !important;
-  margin: 0 auto !important;
-  padding: 6px 12px 44px !important;
+  width: min(100%, 920px) !important;
   min-height: 0 !important;
   height: auto !important;
+  margin: 0 auto !important;
+  padding: 8px 14px 88px !important;
   overflow: visible !important;
   transform: none !important;
   perspective: none !important;
 }
 
+body.loaded .app {
+  transform: none !important;
+}
+
 .topbar {
   position: relative !important;
   top: auto !important;
+  left: auto !important;
+  right: auto !important;
   margin: 0 0 8px !important;
-  border: 1px solid rgba(255,255,255,.76) !important;
-  border-radius: 20px !important;
-  background: rgba(255,255,255,.66) !important;
-  backdrop-filter: blur(18px) saturate(1.16);
-  -webkit-backdrop-filter: blur(18px) saturate(1.16);
-  box-shadow: 0 14px 34px rgba(23,31,25,.08), inset 0 1px 0 rgba(255,255,255,.9) !important;
+  padding: 8px 10px !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(255, 255, 255, .82) !important;
+  background: rgba(255, 255, 255, .72) !important;
+  backdrop-filter: blur(18px) saturate(1.14);
+  -webkit-backdrop-filter: blur(18px) saturate(1.14);
+  box-shadow:
+    0 14px 34px rgba(23, 31, 25, .08),
+    inset 0 1px 0 rgba(255, 255, 255, .96) !important;
+}
+
+.brand-text {
+  gap: 7px !important;
 }
 
 .brand-text strong,
 .brand-text span {
   color: #111 !important;
-  font-size: clamp(20px, 5.2vw, 28px) !important;
-  letter-spacing: -0.035em !important;
+  font-size: clamp(21px, 5.4vw, 28px) !important;
+  line-height: .9 !important;
+  letter-spacing: -0.045em !important;
+  text-shadow: none !important;
+}
+
+.restart {
+  min-height: 42px !important;
+  padding: 0 12px !important;
+  border-radius: 15px !important;
+  background: rgba(255,255,255,.78) !important;
 }
 
 .progress {
   position: relative !important;
   top: auto !important;
   height: 4px !important;
-  margin: 0 10px 12px !important;
-  background: rgba(255,255,255,.64) !important;
+  margin: 0 14px 12px !important;
   border-radius: 999px !important;
+  background: rgba(255, 255, 255, .68) !important;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.9) !important;
+  overflow: hidden !important;
 }
 
 .progress__bar {
   background: linear-gradient(90deg, #263228, #2f7d4a 55%, #79d990) !important;
-  box-shadow: 0 0 18px rgba(87,185,112,.28) !important;
+  box-shadow: 0 0 18px rgba(87, 185, 112, .32) !important;
 }
 
 .flow-screen {
   position: relative !important;
-  margin: 0 !important;
-  padding: 0 !important;
+  width: 100% !important;
   height: auto !important;
   min-height: 0 !important;
   max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
   overflow: visible !important;
   transform: none !important;
 }
@@ -92,49 +132,151 @@ body {
 
 .flow-screen.active {
   display: block !important;
-  animation: none !important;
+  animation: screenFade .22s ease both !important;
   transform: none !important;
+}
+
+@keyframes screenFade {
+  from { opacity: .86; }
+  to { opacity: 1; }
 }
 
 .welcome-card,
 .step-card {
-  margin: 0 !important;
-  min-height: auto !important;
+  position: relative !important;
+  width: 100% !important;
   height: auto !important;
+  min-height: auto !important;
   max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
   overflow: hidden !important;
-  border-color: rgba(255,255,255,.84) !important;
-  background: linear-gradient(180deg, rgba(255,255,255,.80), rgba(255,255,255,.62)) !important;
+  border-radius: 26px !important;
+  border: 1px solid var(--ux-border) !important;
+  background:
+    radial-gradient(circle at 92% 6%, rgba(103, 201, 135, .13), transparent 28%),
+    linear-gradient(180deg, rgba(255,255,255,.84), rgba(255,255,255,.64)) !important;
   box-shadow:
-    0 22px 62px rgba(24,35,28,.12),
-    0 0 36px rgba(87,185,112,.07),
+    0 22px 60px rgba(24, 35, 28, .12),
+    0 0 34px rgba(87, 185, 112, .08),
     inset 0 1px 0 rgba(255,255,255,.96) !important;
   transform: none !important;
   backdrop-filter: blur(16px) saturate(1.12);
   -webkit-backdrop-filter: blur(16px) saturate(1.12);
 }
 
+.welcome-card::before,
+.step-card::before {
+  opacity: .72 !important;
+  pointer-events: none !important;
+}
+
 .hero-content,
 .step-content {
-  margin: 0 !important;
-  padding: 0 !important;
-  min-height: 0 !important;
+  position: relative !important;
+  z-index: 2 !important;
+  display: grid !important;
+  gap: 18px !important;
+  width: 100% !important;
   height: auto !important;
-  max-height: none !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 24px !important;
   overflow: visible !important;
 }
 
 h1,
 .step-title {
+  margin: 0 !important;
+  color: #15120c !important;
+  letter-spacing: -0.058em !important;
   text-wrap: balance;
-  letter-spacing: -0.055em !important;
   text-shadow: 0 8px 24px rgba(24,35,28,.08);
+}
+
+h1 {
+  font-size: clamp(44px, 11.8vw, 82px) !important;
+  line-height: .88 !important;
+}
+
+.step-title {
+  font-size: clamp(38px, 10vw, 68px) !important;
+  line-height: .92 !important;
+}
+
+[data-screen="step3"] .step-title {
+  font-size: clamp(34px, 8.6vw, 58px) !important;
+  line-height: .94 !important;
+}
+
+.lead,
+.step-text,
+.company-section p,
+.company-section li,
+.social-body p,
+.app-feature span {
+  color: var(--ux-muted) !important;
+  line-height: 1.48 !important;
+  letter-spacing: -0.012em !important;
 }
 
 .lead,
 .step-text {
-  color: #5f594c !important;
-  max-width: 62ch;
+  margin: 0 !important;
+  font-size: clamp(17px, 4.4vw, 22px) !important;
+  max-width: 62ch !important;
+}
+
+.step-label {
+  width: fit-content !important;
+  min-height: 36px !important;
+  padding: 0 13px !important;
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.78) !important;
+  border: 1px solid rgba(255,255,255,.88) !important;
+  box-shadow: 0 10px 22px rgba(24,35,28,.07), inset 0 1px 0 rgba(255,255,255,.95) !important;
+}
+
+.hero-image-wrap,
+.company-hero,
+.video-card,
+.social-card,
+.app-shot,
+.metric-card,
+.product-line,
+.app-feature,
+.benefit-item,
+.company-section,
+.app-intro-box,
+.app-feature-box,
+.social-intro,
+.ready-box,
+.advice-box,
+.intro-template,
+.copy-text,
+.rating-summary,
+.rating-box {
+  border-radius: 18px !important;
+  box-shadow:
+    0 14px 34px rgba(28, 38, 32, .075),
+    inset 0 1px 0 rgba(255, 255, 255, .92) !important;
+}
+
+.hero-image-wrap {
+  margin: 0 !important;
+  border-radius: 22px !important;
+  overflow: hidden !important;
+}
+
+.intro-note,
+.ready-box,
+.advice-box,
+.social-intro,
+.app-intro-box,
+.app-feature-box,
+.rating-summary,
+.rating-box {
+  margin: 0 !important;
 }
 
 .primary-btn,
@@ -142,18 +284,10 @@ h1,
 .catalog-btn,
 .next-step-btn,
 .social-link-btn,
-.store-btn,
-.secondary-btn,
-.copy-btn,
-.completion-check,
-.benefit-item,
-.company-section,
-.metric-card,
-.social-card,
-.app-feature,
-.product-line,
-.app-shot {
-  transition: transform .22s ease, box-shadow .22s ease, background .22s ease !important;
+.store-btn {
+  margin: 0 !important;
+  transform: none !important;
+  transition: transform .18s ease, box-shadow .18s ease !important;
 }
 
 .primary-btn:active,
@@ -168,24 +302,82 @@ h1,
   transform: scale(.985) !important;
 }
 
-.loader.hide {
-  display: none !important;
+.benefit-grid,
+.metric-grid,
+.app-features,
+.social-grid,
+.product-lines,
+.store-grid {
+  gap: 12px !important;
 }
 
 .app-gallery {
   overflow-x: auto !important;
   overflow-y: hidden !important;
-  touch-action: pan-x !important;
+  touch-action: auto !important;
   -webkit-overflow-scrolling: touch !important;
+  gap: 4px !important;
+}
+
+.app-shot {
+  border-radius: 22px !important;
+}
+
+.loader.hide {
+  display: none !important;
 }
 
 @media (max-width: 640px) {
   .app {
-    padding-top: 4px !important;
+    padding: 6px 12px 96px !important;
+  }
+
+  .topbar {
+    margin-bottom: 8px !important;
+    border-radius: 18px !important;
+  }
+
+  .progress {
+    margin: 0 14px 12px !important;
   }
 
   .welcome-card,
   .step-card {
-    border-radius: 26px !important;
+    border-radius: 24px !important;
+  }
+
+  .hero-content,
+  .step-content {
+    gap: 16px !important;
+    padding: 20px !important;
+  }
+
+  h1 {
+    font-size: clamp(43px, 11.6vw, 62px) !important;
+    line-height: .9 !important;
+  }
+
+  .step-title {
+    font-size: clamp(36px, 9.8vw, 54px) !important;
+    line-height: .94 !important;
+  }
+
+  [data-screen="step3"] .step-title {
+    font-size: clamp(32px, 8.8vw, 46px) !important;
+  }
+
+  .lead,
+  .step-text {
+    font-size: 18px !important;
+    line-height: 1.46 !important;
+  }
+
+  .primary-btn,
+  .chat-link,
+  .next-step-btn,
+  .store-btn,
+  .social-link-btn,
+  .catalog-btn {
+    min-height: 60px !important;
   }
 }
