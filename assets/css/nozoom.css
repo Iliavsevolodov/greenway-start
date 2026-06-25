@@ -5,7 +5,42 @@ html,
 body {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  touch-action: pan-y;
+  touch-action: auto !important;
+}
+
+/* Жёстко возвращаем нормальный вертикальный скролл на телефоне */
+html {
+  height: auto !important;
+  min-height: 100% !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+body {
+  height: auto !important;
+  min-height: 100svh !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  position: relative !important;
+}
+
+.app,
+.flow-screen,
+.flow-screen.active,
+.welcome-card,
+.step-card,
+.hero-content,
+.step-content {
+  height: auto !important;
+  min-height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.loader.hide {
+  display: none !important;
 }
 
 /* Новый более трендовый рукописный стиль для Greenway */
