@@ -1,11 +1,9 @@
 try {
-  if ('scrollRestoration' in history) {
-    history.scrollRestoration = 'manual';
-  }
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 } catch (error) {}
 
 (function loadRatingStyles() {
-  const href = 'assets/css/rating-step.css?v=30';
+  const href = 'assets/css/rating-step.css?v=34';
   if (document.querySelector(`link[href="${href}"]`)) return;
   const link = document.createElement('link');
   link.rel = 'stylesheet';
@@ -20,19 +18,72 @@ const loaderPercent = document.getElementById('loaderPercent');
 const confettiLayer = document.getElementById('confettiLayer');
 const chatJoinedBtn = document.getElementById('chatJoinedBtn');
 const progressBar = document.getElementById('progressBar');
-const screens = Array.from(document.querySelectorAll('.flow-screen'));
-const goButtons = Array.from(document.querySelectorAll('[data-go]'));
-const copyButtons = Array.from(document.querySelectorAll('[data-copy-target]'));
-const videoButtons = Array.from(document.querySelectorAll('[data-video-play]'));
 
 const order = ['welcome', 'step1', 'step2', 'step3', 'step4', 'step5', 'step6'];
 const STORAGE_SCREEN_KEY = 'greenwayStartCurrentScreen';
 const STORAGE_CHAT_KEY = 'greenwayStartChatJoined';
 const STORAGE_RATING_KEY = 'greenwayStartStageRating';
 
+function goTop() {
+  try {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  } catch (error) {}
+}
+
+function forceTopAfterRender() {
+  goTop();
+  requestAnimationFrame(goTop);
+  setTimeout(goTop, 40);
+  setTimeout(goTop, 140);
+}
+
+function saveScreen(name) {
+  try { localStorage.setItem(STORAGE_SCREEN_KEY, name); } catch (error) {}
+}
+
+function getSavedScreen() {
+  try { return localStorage.getItem(STORAGE_SCREEN_KEY) || 'welcome'; } catch (error) { return 'welcome'; }
+}
+
+function saveChatJoined(value) {
+  try { localStorage.setItem(STORAGE_CHAT_KEY, value ? '1' : '0'); } catch (error) {}
+}
+
+function getSavedChatJoined() {
+  try { return localStorage.getItem(STORAGE_CHAT_KEY) === '1'; } catch (error) { return false; }
+}
+
+function saveRating(value) {
+  try { localStorage.setItem(STORAGE_RATING_KEY, String(value)); } catch (error) {}
+}
+
+function getSavedRating() {
+  try { return Number(localStorage.getItem(STORAGE_RATING_KEY) || '0'); } catch (error) { return 0; }
+}
+
+function showToast(text) {
+  if (!toast) return;
+  toast.textContent = text;
+  toast.classList.add('show');
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => toast.classList.remove('show'), 1600);
+}
+
+function softHaptic(duration = 12) {
+  try { if ('vibrate' in navigator) navigator.vibrate(duration); } catch (error) {}
+}
+
+function updateProgress(name) {
+  if (!progressBar) return;
+  const idx = order.indexOf(name);
+  const percent = idx < 0 ? 0 : (idx / (order.length - 1)) * 100;
+  progressBar.style.width = percent + '%';
+}
+
 function ensureRatingStep() {
   if (document.querySelector('[data-screen="step6"]')) return;
-
   const app = document.querySelector('.app');
   if (!app) return;
 
@@ -67,7 +118,6 @@ function ensureRatingStep() {
       </div>
     </div>
   `;
-
   app.appendChild(section);
 
   const appNextButton = document.querySelector('[data-screen="step5"] .next-step-btn');
@@ -77,143 +127,43 @@ function ensureRatingStep() {
   }
 }
 
-function refreshCollections() {
-  return {
-    screens: Array.from(document.querySelectorAll('.flow-screen')),
-    goButtons: Array.from(document.querySelectorAll('[data-go]')),
-    copyButtons: Array.from(document.querySelectorAll('[data-copy-target]')),
-    videoButtons: Array.from(document.querySelectorAll('[data-video-play]'))
-  };
-}
-
-function saveScreen(name) {
-  try {
-    localStorage.setItem(STORAGE_SCREEN_KEY, name);
-  } catch (error) {}
-}
-
-function saveChatJoined(value) {
-  try {
-    localStorage.setItem(STORAGE_CHAT_KEY, value ? '1' : '0');
-  } catch (error) {}
-}
-
-function saveRating(value) {
-  try {
-    localStorage.setItem(STORAGE_RATING_KEY, String(value));
-  } catch (error) {}
-}
-
-function getSavedScreen() {
-  try {
-    return localStorage.getItem(STORAGE_SCREEN_KEY) || 'welcome';
-  } catch (error) {
-    return 'welcome';
-  }
-}
-
-function getSavedChatJoined() {
-  try {
-    return localStorage.getItem(STORAGE_CHAT_KEY) === '1';
-  } catch (error) {
-    return false;
-  }
-}
-
-function getSavedRating() {
-  try {
-    return Number(localStorage.getItem(STORAGE_RATING_KEY) || '0');
-  } catch (error) {
-    return 0;
-  }
-}
-
-function goTop() {
-  try {
-    window.scrollTo(0, 0);
-  } catch (error) {}
-}
-
-function updateProgress(name) {
-  if (!progressBar) return;
-  const idx = order.indexOf(name);
-  const percent = idx < 0 ? 0 : (idx / (order.length - 1)) * 100;
-  progressBar.style.width = percent + '%';
-}
-
-function showToast(text) {
-  if (!toast) return;
-  toast.textContent = text;
-  toast.classList.add('show');
-  clearTimeout(showToast.timer);
-  showToast.timer = setTimeout(() => toast.classList.remove('show'), 1600);
-}
-
-function softHaptic(duration = 12) {
-  try {
-    if ('vibrate' in navigator) navigator.vibrate(duration);
-  } catch (error) {}
-}
-
 function applyScreen(name, shouldSave = true) {
-  const currentScreens = Array.from(document.querySelectorAll('.flow-screen'));
   const next = document.querySelector(`[data-screen="${name}"]`);
   const safeName = next ? name : 'welcome';
+
+  document.querySelectorAll('.flow-screen').forEach(screen => screen.classList.remove('active'));
   const safeNext = document.querySelector(`[data-screen="${safeName}"]`);
-
-  currentScreens.forEach(screen => screen.classList.remove('active'));
   if (safeNext) safeNext.classList.add('active');
-  if (shouldSave) saveScreen(safeName);
 
+  if (shouldSave) saveScreen(safeName);
   updateProgress(safeName);
 }
 
 function showScreen(name) {
-  const current = document.querySelector('.flow-screen.active');
   const next = document.querySelector(`[data-screen="${name}"]`);
-  if (!next || next === current) return;
-
+  if (!next) return;
   applyScreen(name, true);
-  goTop();
+  forceTopAfterRender();
   softHaptic(10);
-}
-
-function restoreProgress() {
-  const savedScreen = getSavedScreen();
-  const chatJoined = getSavedChatJoined();
-  const savedRating = getSavedRating();
-
-  applyScreen(savedScreen, false);
-
-  if (chatJoined && chatJoinedBtn) {
-    chatJoinedBtn.classList.add('checked');
-  }
-
-  if (savedRating > 0) {
-    setRating(savedRating, false);
-  }
-
-  setTimeout(goTop, 80);
 }
 
 function runLoader() {
   document.body.classList.add('loaded');
-
-  if (!loader || !loaderPercent) return;
-
+  if (!loader || !loaderPercent) {
+    forceTopAfterRender();
+    return;
+  }
   loaderPercent.textContent = '100%';
   setTimeout(() => {
     loader.classList.add('hide');
+    forceTopAfterRender();
   }, 180);
 }
 
 function fireConfetti() {
   if (!confettiLayer) return;
-
   const colors = ['#f6c400', '#17130c', '#2f7d4a', '#ffffff', '#202247'];
-  const count = 56;
-
-  for (let i = 0; i < count; i++) {
+  for (let i = 0; i < 56; i++) {
     const piece = document.createElement('span');
     piece.className = 'confetti-piece';
     piece.style.left = Math.random() * 100 + 'vw';
@@ -222,7 +172,6 @@ function fireConfetti() {
     piece.style.animationDelay = Math.random() * 0.25 + 's';
     piece.style.animationDuration = 0.9 + Math.random() * 0.55 + 's';
     confettiLayer.appendChild(piece);
-
     setTimeout(() => piece.remove(), 1800);
   }
 }
@@ -230,7 +179,6 @@ function fireConfetti() {
 function fireRatingSparks() {
   const sparks = document.getElementById('ratingSparks');
   if (!sparks) return;
-
   for (let i = 0; i < 14; i++) {
     const spark = document.createElement('span');
     spark.style.setProperty('--x', (Math.random() * 160 - 80) + 'px');
@@ -256,11 +204,7 @@ function setRating(value, animate = true) {
       ? 'Класс! Значит, первый этап зашёл максимально понятно 🚀'
       : `Спасибо! Твоя оценка: ${value} из 5`;
   }
-
-  if (nextBtn) {
-    nextBtn.classList.add('is-visible');
-  }
-
+  if (nextBtn) nextBtn.classList.add('is-visible');
   saveRating(value);
 
   if (animate) {
@@ -283,27 +227,17 @@ function legacyCopy(text) {
   textarea.style.pointerEvents = 'none';
   textarea.style.fontSize = '16px';
   document.body.appendChild(textarea);
-
   textarea.focus();
   textarea.select();
   textarea.setSelectionRange(0, textarea.value.length);
-
   let copied = false;
-  try {
-    copied = document.execCommand('copy');
-  } finally {
-    textarea.remove();
-  }
-
-  if (!copied) {
-    throw new Error('copy_failed');
-  }
+  try { copied = document.execCommand('copy'); } finally { textarea.remove(); }
+  if (!copied) throw new Error('copy_failed');
 }
 
 async function copyTextFromElement(targetId, button) {
   const target = document.getElementById(targetId);
   if (!target) return;
-
   const text = target.textContent.trim();
   const originalText = button.textContent;
   let copied = false;
@@ -313,17 +247,10 @@ async function copyTextFromElement(targetId, button) {
       await navigator.clipboard.writeText(text);
       copied = true;
     }
-  } catch (error) {
-    copied = false;
-  }
+  } catch (error) {}
 
   if (!copied) {
-    try {
-      legacyCopy(text);
-      copied = true;
-    } catch (error) {
-      copied = false;
-    }
+    try { legacyCopy(text); copied = true; } catch (error) {}
   }
 
   if (copied) {
@@ -332,7 +259,6 @@ async function copyTextFromElement(targetId, button) {
     button.textContent = '✅ Скопировано';
     showToast('Сообщение скопировано');
     softHaptic(18);
-
     setTimeout(() => {
       button.textContent = originalText;
       if (card) card.classList.remove('copied');
@@ -341,7 +267,6 @@ async function copyTextFromElement(targetId, button) {
     showToast('Зажми текст и скопируй вручную');
     target.setAttribute('tabindex', '-1');
     target.focus({ preventScroll: true });
-
     const range = document.createRange();
     range.selectNodeContents(target);
     const selection = window.getSelection();
@@ -353,52 +278,38 @@ async function copyTextFromElement(targetId, button) {
 function startVideo(button) {
   const card = button.closest('[data-video-card]');
   if (!card) return;
-
   const iframe = card.querySelector('iframe');
   if (!iframe) return;
-
   const src = iframe.dataset.src;
-  if (src && !iframe.src) {
-    iframe.src = src;
-  }
-
+  if (src && !iframe.src) iframe.src = src;
   card.classList.add('is-playing');
   showToast('Запускаю видео');
   softHaptic(18);
 }
 
-function bindDynamicEvents() {
+function bindEvents() {
   document.querySelectorAll('[data-go]').forEach(button => {
     if (button.dataset.boundGo === '1') return;
     button.dataset.boundGo = '1';
-    button.addEventListener('click', () => {
-      const target = button.dataset.go;
-      showScreen(target);
-    });
+    button.addEventListener('click', () => showScreen(button.dataset.go));
   });
 
   document.querySelectorAll('[data-copy-target]').forEach(button => {
     if (button.dataset.boundCopy === '1') return;
     button.dataset.boundCopy = '1';
-    button.addEventListener('click', () => {
-      copyTextFromElement(button.dataset.copyTarget, button);
-    });
+    button.addEventListener('click', () => copyTextFromElement(button.dataset.copyTarget, button));
   });
 
   document.querySelectorAll('[data-video-play]').forEach(button => {
     if (button.dataset.boundVideo === '1') return;
     button.dataset.boundVideo = '1';
-    button.addEventListener('click', () => {
-      startVideo(button);
-    });
+    button.addEventListener('click', () => startVideo(button));
   });
 
   document.querySelectorAll('.rating-star').forEach(button => {
     if (button.dataset.boundRating === '1') return;
     button.dataset.boundRating = '1';
-    button.addEventListener('click', () => {
-      setRating(Number(button.dataset.rating || '0'));
-    });
+    button.addEventListener('click', () => setRating(Number(button.dataset.rating || '0')));
   });
 
   const ratingNextBtn = document.getElementById('ratingNextBtn');
@@ -406,15 +317,28 @@ function bindDynamicEvents() {
     ratingNextBtn.dataset.boundNext = '1';
     ratingNextBtn.addEventListener('click', () => {
       showToast('Скоро откроем следующий этап');
+      forceTopAfterRender();
       softHaptic(16);
     });
   }
 }
 
+function restoreProgress() {
+  const savedScreen = getSavedScreen();
+  applyScreen(savedScreen, false);
+
+  if (getSavedChatJoined() && chatJoinedBtn) chatJoinedBtn.classList.add('checked');
+  const savedRating = getSavedRating();
+  if (savedRating > 0) setRating(savedRating, false);
+
+  forceTopAfterRender();
+}
+
 ensureRatingStep();
-bindDynamicEvents();
+bindEvents();
 restoreProgress();
-window.addEventListener('load', () => setTimeout(goTop, 80), { once: true });
+window.addEventListener('load', forceTopAfterRender, { once: true });
+window.addEventListener('pageshow', forceTopAfterRender);
 
 if (resetBtn) {
   resetBtn.addEventListener('click', () => {
@@ -433,16 +357,12 @@ if (chatJoinedBtn) {
       showScreen('step2');
       return;
     }
-
     chatJoinedBtn.classList.add('checked');
     saveChatJoined(true);
     fireConfetti();
     showToast('Отлично! Шаг выполнен');
     softHaptic(24);
-
-    setTimeout(() => {
-      showScreen('step2');
-    }, 900);
+    setTimeout(() => showScreen('step2'), 900);
   });
 }
 
