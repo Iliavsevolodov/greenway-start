@@ -29,14 +29,21 @@ body {
 .app,
 .flow-screen,
 .flow-screen.active,
-.welcome-card,
-.step-card,
 .hero-content,
 .step-content {
   height: auto !important;
   min-height: auto !important;
   max-height: none !important;
   overflow: visible !important;
+}
+
+/* Карточки должны обрезать декоративные элементы. Иначе shine/watermark могут создавать лишний scroll-area */
+.welcome-card,
+.step-card {
+  height: auto !important;
+  min-height: auto !important;
+  max-height: none !important;
+  overflow: hidden !important;
 }
 
 .loader.hide {
