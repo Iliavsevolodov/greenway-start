@@ -2,23 +2,17 @@ try {
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 } catch (error) {}
 
-(function loadRatingStyles() {
-  const href = 'assets/css/rating-step.css?v=36';
+function loadCssOnce(href) {
   if (document.querySelector(`link[href="${href}"]`)) return;
   const link = document.createElement('link');
   link.rel = 'stylesheet';
   link.href = href;
   document.head.appendChild(link);
-})();
+}
 
-(function loadPageTransitionStyles() {
-  const href = 'assets/css/page-transition.css?v=36';
-  if (document.querySelector(`link[href="${href}"]`)) return;
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = href;
-  document.head.appendChild(link);
-})();
+loadCssOnce('assets/css/rating-step.css?v=37');
+loadCssOnce('assets/css/page-transition.css?v=37');
+loadCssOnce('assets/css/no-bottom-space.css?v=37');
 
 const resetBtn = document.getElementById('resetBtn');
 const toast = document.getElementById('toast');
@@ -33,6 +27,23 @@ const STORAGE_SCREEN_KEY = 'greenwayStartCurrentScreen';
 const STORAGE_CHAT_KEY = 'greenwayStartChatJoined';
 const STORAGE_RATING_KEY = 'greenwayStartStageRating';
 
+function syncDocumentHeight() {
+  try {
+    const app = document.querySelector('.app');
+    if (!app) return;
+
+    const height = Math.ceil(app.getBoundingClientRect().height);
+    const nextHeight = Math.max(height, 1);
+
+    document.documentElement.style.minHeight = '0px';
+    document.body.style.minHeight = '0px';
+    document.documentElement.style.height = `${nextHeight}px`;
+    document.body.style.height = `${nextHeight}px`;
+    document.documentElement.style.paddingBottom = '0px';
+    document.body.style.paddingBottom = '0px';
+  } catch (error) {}
+}
+
 function goTop() {
   try {
     document.documentElement.scrollTop = 0;
@@ -42,10 +53,20 @@ function goTop() {
 }
 
 function forceTopAfterRender() {
+  syncDocumentHeight();
   goTop();
-  requestAnimationFrame(goTop);
-  setTimeout(goTop, 40);
-  setTimeout(goTop, 140);
+  requestAnimationFrame(() => {
+    syncDocumentHeight();
+    goTop();
+  });
+  setTimeout(() => {
+    syncDocumentHeight();
+    goTop();
+  }, 60);
+  setTimeout(() => {
+    syncDocumentHeight();
+    goTop();
+  }, 220);
 }
 
 function saveScreen(name) {
@@ -146,6 +167,7 @@ function applyScreen(name, shouldSave = true) {
 
   if (shouldSave) saveScreen(safeName);
   updateProgress(safeName);
+  syncDocumentHeight();
 }
 
 function showScreen(name) {
@@ -228,6 +250,7 @@ function setRating(value, animate = true) {
   }
   if (nextBtn) nextBtn.classList.add('is-visible');
   saveRating(value);
+  syncDocumentHeight();
 
   if (animate) {
     fireRatingSparks();
@@ -284,6 +307,7 @@ async function copyTextFromElement(targetId, button) {
     setTimeout(() => {
       button.textContent = originalText;
       if (card) card.classList.remove('copied');
+      syncDocumentHeight();
     }, 1800);
   } else {
     showToast('Зажми текст и скопируй вручную');
@@ -307,6 +331,7 @@ function startVideo(button) {
   card.classList.add('is-playing');
   showToast('Запускаю видео');
   softHaptic(18);
+  setTimeout(syncDocumentHeight, 120);
 }
 
 function bindEvents() {
@@ -361,6 +386,10 @@ bindEvents();
 restoreProgress();
 window.addEventListener('load', forceTopAfterRender, { once: true });
 window.addEventListener('pageshow', forceTopAfterRender);
+window.addEventListener('resize', syncDocumentHeight);
+document.querySelectorAll('img').forEach(img => {
+  if (!img.complete) img.addEventListener('load', syncDocumentHeight, { once: true });
+});
 
 if (resetBtn) {
   resetBtn.addEventListener('click', () => {
