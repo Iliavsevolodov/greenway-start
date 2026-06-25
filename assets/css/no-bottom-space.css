@@ -1,0 +1,56 @@
+/* Final no-bottom-space fix */
+html,
+body {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+}
+
+body {
+  overscroll-behavior-y: none !important;
+}
+
+.app {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+  min-height: 0 !important;
+}
+
+.flow-screen,
+.flow-screen.active,
+.welcome-card,
+.step-card,
+.hero-content,
+.step-content {
+  margin-bottom: 0 !important;
+  min-height: 0 !important;
+}
+
+.hero-content,
+.step-content {
+  padding-bottom: 18px !important;
+}
+
+.hero-content > :last-child,
+.step-content > :last-child,
+.nav-row,
+.nav-row > *,
+.primary-btn,
+.next-step-btn,
+.secondary-btn,
+.completion-check,
+.rating-next {
+  margin-bottom: 0 !important;
+}
+
+@media (max-width: 640px) {
+  .app {
+    padding-bottom: 0 !important;
+  }
+
+  .hero-content,
+  .step-content {
+    padding-bottom: 16px !important;
+  }
+}
