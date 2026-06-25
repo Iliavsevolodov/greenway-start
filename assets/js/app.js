@@ -8,6 +8,7 @@ const progressBar = document.getElementById('progressBar');
 const screens = Array.from(document.querySelectorAll('.flow-screen'));
 const goButtons = Array.from(document.querySelectorAll('[data-go]'));
 const copyButtons = Array.from(document.querySelectorAll('[data-copy-target]'));
+const videoButtons = Array.from(document.querySelectorAll('[data-video-play]'));
 
 const order = ['welcome', 'step1', 'step2', 'step3'];
 const STORAGE_SCREEN_KEY = 'greenwayStartCurrentScreen';
@@ -203,6 +204,22 @@ async function copyTextFromElement(targetId, button) {
   }
 }
 
+function startVideo(button) {
+  const card = button.closest('[data-video-card]');
+  if (!card) return;
+
+  const iframe = card.querySelector('iframe');
+  if (!iframe) return;
+
+  const src = iframe.dataset.src;
+  if (src && !iframe.src) {
+    iframe.src = src;
+  }
+
+  card.classList.add('is-playing');
+  showToast('Запускаю видео');
+}
+
 restoreProgress();
 
 if (resetBtn) {
@@ -224,6 +241,12 @@ goButtons.forEach(button => {
 copyButtons.forEach(button => {
   button.addEventListener('click', () => {
     copyTextFromElement(button.dataset.copyTarget, button);
+  });
+});
+
+videoButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    startVideo(button);
   });
 });
 
