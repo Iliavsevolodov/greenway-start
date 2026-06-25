@@ -371,32 +371,86 @@
 .product-lines {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 12px;
+  padding-top: 2px;
 }
 
 .product-line {
-  border: 1px solid rgba(255, 255, 255, 0.74);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.62);
+  position: relative;
+  min-height: 82px;
+  display: flex;
+  align-items: center;
+  padding: 16px 16px 16px 72px;
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(87,185,112,.10), transparent 28%),
+    linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,255,255,.68));
   box-shadow:
-    0 10px 22px rgba(28,38,32,.055),
-    inset 0 1px 0 rgba(255, 255, 255, 0.88);
-  padding: 12px;
+    0 12px 26px rgba(28,38,32,.065),
+    0 0 20px rgba(87,185,112,.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
   color: var(--ink);
-  font-size: 14px;
-  line-height: 1.25;
-  font-weight: 650;
-  transition: transform .25s ease, background .25s ease, box-shadow .25s ease;
+  font-size: 17px;
+  line-height: 1.2;
+  font-weight: 780;
+  letter-spacing: -0.02em;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
+  overflow: hidden;
+}
+
+.product-line::before {
+  content: "✨";
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: rgba(47, 125, 74, 0.11);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9);
+  font-size: 20px;
+}
+
+.product-line::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: linear-gradient(180deg, #63c982, #2f7d4a);
+  opacity: .82;
 }
 
 .product-line:hover {
-  transform: translateY(-2px);
-  background: rgba(255,255,255,.82);
+  transform: translateY(-3px) scale(1.01);
+  border-color: rgba(255, 255, 255, 0.95);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(87,185,112,.16), transparent 28%),
+    linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.74));
   box-shadow:
-    0 16px 30px rgba(28,38,32,.09),
-    0 0 20px rgba(87,185,112,.09),
-    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+    0 18px 34px rgba(28,38,32,.10),
+    0 0 26px rgba(87,185,112,.11),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
 }
+
+.product-line:nth-child(1)::before { content: "🧵"; }
+.product-line:nth-child(2)::before { content: "🧴"; }
+.product-line:nth-child(3)::before { content: "💇"; }
+.product-line:nth-child(4)::before { content: "🪥"; }
+.product-line:nth-child(5)::before { content: "💄"; }
+.product-line:nth-child(6)::before { content: "💎"; }
+.product-line:nth-child(7)::before { content: "💊"; }
+.product-line:nth-child(8)::before { content: "🫖"; }
+.product-line:nth-child(9)::before { content: "🥗"; }
+.product-line:nth-child(10)::before { content: "🧒"; }
+.product-line:nth-child(11)::before { content: "🌿"; }
+.product-line:nth-child(12)::before { content: "🌸"; }
+.product-line:nth-child(13)::before { content: "💧"; }
+.product-line:nth-child(14)::before { content: "🍽️"; }
+.product-line:nth-child(15)::before { content: "🧠"; }
 
 .update-note {
   border-radius: 16px;
@@ -424,5 +478,18 @@
   .play-button {
     width: 74px;
     height: 74px;
+  }
+
+  .product-line {
+    min-height: 76px;
+    padding: 15px 14px 15px 66px;
+    font-size: 16px;
+  }
+
+  .product-line::before {
+    width: 38px;
+    height: 38px;
+    left: 14px;
+    font-size: 19px;
   }
 }
