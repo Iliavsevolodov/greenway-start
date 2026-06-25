@@ -53,12 +53,27 @@ body {
   padding: 2px 2px 0;
 }
 
-.brand-text strong {
+.brand-text {
+  display: flex !important;
+  align-items: baseline;
+  gap: 8px;
+  line-height: 1 !important;
+  white-space: nowrap;
+}
+
+.brand-text strong,
+.brand-text span {
+  color: #111111 !important;
   text-shadow: 0 4px 18px rgba(23, 19, 12, 0.08);
 }
 
+.brand-text strong {
+  font-size: 28px;
+}
+
 .brand-text span {
-  text-shadow: 0 0 18px rgba(47, 125, 74, 0.14);
+  font-size: 28px;
+  letter-spacing: 0.02em !important;
 }
 
 .restart,
