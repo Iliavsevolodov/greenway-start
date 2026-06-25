@@ -1,16 +1,12 @@
-/* Clean white premium UX layer - no decorative background elements, stable scroll */
+/* Final safe UX overrides: clean white background, no bottom empty space, stable scroll */
 :root {
   --ux-ink: #11130f;
   --ux-muted: #625949;
   --ux-green: #2f7d4a;
-  --ux-green-soft: rgba(47, 125, 74, .10);
   --ux-yellow: #f6c400;
-  --ux-border: rgba(20, 28, 22, .07);
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 html,
 body {
@@ -32,9 +28,8 @@ body {
   justify-content: flex-start !important;
   color: var(--ux-ink);
   background:
-    radial-gradient(circle at 86% 2%, rgba(47, 125, 74, .10), transparent 28%),
-    radial-gradient(circle at 12% 40%, rgba(246, 196, 0, .055), transparent 26%),
-    radial-gradient(circle at 92% 82%, rgba(47, 125, 74, .055), transparent 28%),
+    radial-gradient(circle at 86% 2%, rgba(47, 125, 74, .08), transparent 24%),
+    radial-gradient(circle at 12% 42%, rgba(246, 196, 0, .045), transparent 24%),
     #ffffff !important;
 }
 
@@ -48,6 +43,7 @@ body::after,
   display: none !important;
   content: none !important;
   animation: none !important;
+  visibility: hidden !important;
 }
 
 .app {
@@ -57,37 +53,26 @@ body::after,
   min-height: 0 !important;
   height: auto !important;
   margin: 0 auto !important;
-  padding: 8px 12px 96px !important;
+  padding: 8px 12px 8px !important;
   overflow: visible !important;
   transform: none !important;
   perspective: none !important;
 }
 
-body.loaded .app {
-  transform: none !important;
-}
+body.loaded .app { transform: none !important; }
 
 .topbar {
   position: relative !important;
   top: auto !important;
-  left: auto !important;
-  right: auto !important;
   margin: 0 0 8px !important;
   padding: 8px 10px !important;
   border-radius: 18px !important;
   border: 1px solid rgba(18, 24, 19, .06) !important;
-  background: rgba(255, 255, 255, .86) !important;
-  backdrop-filter: blur(16px) saturate(1.08);
-  -webkit-backdrop-filter: blur(16px) saturate(1.08);
-  box-shadow:
-    0 12px 30px rgba(20, 28, 22, .075),
-    inset 0 1px 0 rgba(255, 255, 255, .96) !important;
+  background: rgba(255, 255, 255, .90) !important;
+  box-shadow: 0 12px 30px rgba(20, 28, 22, .07), inset 0 1px 0 rgba(255, 255, 255, .96) !important;
 }
 
-.brand-text {
-  gap: 7px !important;
-}
-
+.brand-text { gap: 7px !important; }
 .brand-text strong,
 .brand-text span {
   color: #111 !important;
@@ -95,13 +80,6 @@ body.loaded .app {
   line-height: .9 !important;
   letter-spacing: -0.045em !important;
   text-shadow: none !important;
-}
-
-.restart {
-  min-height: 42px !important;
-  padding: 0 12px !important;
-  border-radius: 15px !important;
-  background: rgba(255, 255, 255, .92) !important;
 }
 
 .progress {
@@ -132,15 +110,8 @@ body.loaded .app {
   transform: none !important;
 }
 
-.flow-screen:not(.active) {
-  display: none !important;
-}
-
-.flow-screen.active {
-  display: block !important;
-  animation: none !important;
-  transform: none !important;
-}
+.flow-screen:not(.active) { display: none !important; }
+.flow-screen.active { display: block !important; animation: none !important; transform: none !important; }
 
 .welcome-card,
 .step-card {
@@ -155,12 +126,9 @@ body.loaded .app {
   border-radius: 24px !important;
   border: 1px solid rgba(18, 24, 19, .065) !important;
   background:
-    radial-gradient(circle at 92% 4%, rgba(47, 125, 74, .08), transparent 30%),
-    linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(250, 253, 251, .92)) !important;
-  box-shadow:
-    0 20px 54px rgba(20, 28, 22, .10),
-    0 0 28px rgba(47, 125, 74, .055),
-    inset 0 1px 0 rgba(255, 255, 255, .98) !important;
+    radial-gradient(circle at 92% 4%, rgba(47, 125, 74, .06), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(250, 253, 251, .94)) !important;
+  box-shadow: 0 18px 44px rgba(20, 28, 22, .085), 0 0 22px rgba(47, 125, 74, .045), inset 0 1px 0 rgba(255, 255, 255, .98) !important;
   transform: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
@@ -171,7 +139,7 @@ body.loaded .app {
 .welcome-card::after,
 .step-card::after {
   pointer-events: none !important;
-  opacity: .42 !important;
+  opacity: .32 !important;
 }
 
 .hero-content,
@@ -197,20 +165,9 @@ h1,
   text-shadow: none !important;
 }
 
-h1 {
-  font-size: clamp(42px, 11.2vw, 68px) !important;
-  line-height: .9 !important;
-}
-
-.step-title {
-  font-size: clamp(36px, 9.4vw, 58px) !important;
-  line-height: .94 !important;
-}
-
-[data-screen="step3"] .step-title {
-  font-size: clamp(31px, 8.4vw, 48px) !important;
-  line-height: .96 !important;
-}
+h1 { font-size: clamp(42px, 11.2vw, 68px) !important; line-height: .9 !important; }
+.step-title { font-size: clamp(36px, 9.4vw, 58px) !important; line-height: .94 !important; }
+[data-screen="step3"] .step-title { font-size: clamp(31px, 8.4vw, 48px) !important; line-height: .96 !important; }
 
 .lead,
 .step-text,
@@ -260,9 +217,7 @@ h1 {
 .rating-summary,
 .rating-box {
   border-radius: 18px !important;
-  box-shadow:
-    0 12px 30px rgba(20, 28, 22, .07),
-    inset 0 1px 0 rgba(255, 255, 255, .94) !important;
+  box-shadow: 0 12px 30px rgba(20, 28, 22, .07), inset 0 1px 0 rgba(255, 255, 255, .94) !important;
 }
 
 .hero-image-wrap {
@@ -278,9 +233,7 @@ h1 {
 .app-intro-box,
 .app-feature-box,
 .rating-summary,
-.rating-box {
-  margin: 0 !important;
-}
+.rating-box { margin: 0 !important; }
 
 .primary-btn,
 .chat-link,
@@ -301,18 +254,14 @@ h1 {
 .store-btn:active,
 .secondary-btn:active,
 .copy-btn:active,
-.completion-check:active {
-  transform: scale(.985) !important;
-}
+.completion-check:active { transform: scale(.985) !important; }
 
 .benefit-grid,
 .metric-grid,
 .app-features,
 .social-grid,
 .product-lines,
-.store-grid {
-  gap: 12px !important;
-}
+.store-grid { gap: 12px !important; }
 
 .app-gallery {
   overflow-x: auto !important;
@@ -322,65 +271,26 @@ h1 {
   gap: 4px !important;
 }
 
-.app-shot {
-  border-radius: 22px !important;
-}
-
-.loader.hide {
-  display: none !important;
-}
+.app-shot { border-radius: 22px !important; }
+.loader.hide { display: none !important; }
 
 @media (max-width: 640px) {
-  .app {
-    padding: 6px 12px 96px !important;
-  }
-
-  .topbar {
-    margin-bottom: 8px !important;
-    border-radius: 18px !important;
-  }
-
-  .progress {
-    margin: 0 14px 12px !important;
-  }
-
+  .app { padding: 6px 12px 8px !important; }
+  .topbar { margin-bottom: 8px !important; border-radius: 18px !important; }
+  .progress { margin: 0 14px 12px !important; }
   .welcome-card,
-  .step-card {
-    border-radius: 24px !important;
-  }
-
+  .step-card { border-radius: 24px !important; }
   .hero-content,
-  .step-content {
-    gap: 16px !important;
-    padding: 20px !important;
-  }
-
-  h1 {
-    font-size: clamp(42px, 11.2vw, 60px) !important;
-    line-height: .9 !important;
-  }
-
-  .step-title {
-    font-size: clamp(34px, 9.4vw, 52px) !important;
-    line-height: .94 !important;
-  }
-
-  [data-screen="step3"] .step-title {
-    font-size: clamp(30px, 8.2vw, 44px) !important;
-  }
-
+  .step-content { gap: 16px !important; padding: 20px !important; }
+  h1 { font-size: clamp(42px, 11.2vw, 60px) !important; line-height: .9 !important; }
+  .step-title { font-size: clamp(34px, 9.4vw, 52px) !important; line-height: .94 !important; }
+  [data-screen="step3"] .step-title { font-size: clamp(30px, 8.2vw, 44px) !important; }
   .lead,
-  .step-text {
-    font-size: 18px !important;
-    line-height: 1.46 !important;
-  }
-
+  .step-text { font-size: 18px !important; line-height: 1.46 !important; }
   .primary-btn,
   .chat-link,
   .next-step-btn,
   .store-btn,
   .social-link-btn,
-  .catalog-btn {
-    min-height: 60px !important;
-  }
+  .catalog-btn { min-height: 60px !important; }
 }
